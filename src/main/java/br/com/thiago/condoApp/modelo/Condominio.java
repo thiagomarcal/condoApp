@@ -15,24 +15,23 @@ import javax.persistence.OneToMany;
 public class Condominio implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	
-	public Condominio(String nome) {
-		this.nome = nome;
-	}
-	
+
 	@Id
 	@Column
 	@GeneratedValue
 	private Long id;
 	
 	@Column
-	private String nome;
+	private String name;
 	
 	@Column
 	private String endereco;
 	
 	@OneToMany(mappedBy = "condominio", targetEntity = Bloco.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Bloco> blocos;
+	
+	@OneToMany(mappedBy = "condominio", targetEntity = Area.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Area> areas;
 
 	public Long getId() {
 		return id;
@@ -42,12 +41,12 @@ public class Condominio implements Serializable{
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getEndereco() {
@@ -66,5 +65,14 @@ public class Condominio implements Serializable{
 		this.blocos = blocos;
 	}
 
+	public List<Area> getAreas() {
+		return areas;
+	}
 
+	public void setAreas(List<Area> areas) {
+		this.areas = areas;
+	}
+
+
+	
 }

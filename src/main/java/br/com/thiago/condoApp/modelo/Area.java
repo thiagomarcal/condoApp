@@ -12,17 +12,20 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Bloco implements Serializable{
+public class Area implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column
 	@GeneratedValue
+	@Column
 	private Long id;
 	
 	@Column
 	private String nome;
+	
+	@Column
+	private String desc;
 	
 	@ManyToOne
 	@JoinColumn(name = "condominio_id")
@@ -45,6 +48,14 @@ public class Bloco implements Serializable{
 		this.nome = nome;
 	}
 
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
 	public Condominio getCondominio() {
 		return condominio;
 	}
@@ -52,5 +63,7 @@ public class Bloco implements Serializable{
 	public void setCondominio(Condominio condominio) {
 		this.condominio = condominio;
 	}
+
+	
 
 }
