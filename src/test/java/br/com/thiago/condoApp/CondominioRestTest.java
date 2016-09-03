@@ -1,10 +1,16 @@
 package br.com.thiago.condoApp;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,18 +26,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import br.com.thiago.condoApp.modelo.Area;
-import br.com.thiago.condoApp.modelo.Bloco;
 import br.com.thiago.condoApp.modelo.Condominio;
 import br.com.thiago.condoApp.repository.CondominioRepository;
 import br.com.thiago.condoApp.servico.CondominioService;
-
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = App.class)
@@ -75,15 +72,13 @@ public class CondominioRestTest {
 		
 		this.condominioRepository.deleteAll();
 		
-		
-		
 		Condominio cond1 = new Condominio();
 		cond1.setName("Teste1");
 		cond1.setEndereco("TesteEndereco");
 		
 		Area area1 = new Area();
 		area1.setNome("Sauna");
-		area1.setDesc("SaunaT");
+		area1.setDescricao("SaunaT");
 		area1.setCondominio(cond1);
 		
 //		Condominio cond2 = new Condominio();
@@ -123,6 +118,11 @@ public class CondominioRestTest {
 //		condominioService.save(cond2);
 		
 		this.mockMvc = webAppContextSetup(webApplicationContext).build();
+	}
+	
+	@After
+	public void shutdown() {
+		
 	}
 	
 	@Test

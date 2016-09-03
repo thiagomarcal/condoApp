@@ -53,4 +53,8 @@ public class Bloco implements Serializable{
 		this.condominio = condominio;
 	}
 
+	
+
+	
+
 }

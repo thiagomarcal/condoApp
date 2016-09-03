@@ -25,7 +25,7 @@ public class Area implements Serializable {
 	private String nome;
 	
 	@Column
-	private String desc;
+	private String descricao;
 	
 	@ManyToOne
 	@JoinColumn(name = "condominio_id")
@@ -48,12 +48,12 @@ public class Area implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	public Condominio getCondominio() {
