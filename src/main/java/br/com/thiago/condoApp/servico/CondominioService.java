@@ -11,6 +11,5 @@ public interface CondominioService {
 	public Condominio findOne(Long id);
 	public void delete(Long id);
 	public List<Condominio> findByName(String name);
-	
 
 }

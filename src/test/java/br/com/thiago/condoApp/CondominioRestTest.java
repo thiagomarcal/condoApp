@@ -94,6 +94,8 @@ public class CondominioRestTest {
 		Set<Area> listaArea = new HashSet<>();
 		listaArea.add(area1);
 		listaArea.add(area2);
+		listaArea.add(area3);
+		listaArea.add(area4);
 		
 		cond1.setAreas(listaArea);
 		
