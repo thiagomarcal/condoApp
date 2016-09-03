@@ -1,7 +1,7 @@
 package br.com.thiago.condoApp.modelo;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,10 +28,10 @@ public class Condominio implements Serializable{
 	private String endereco;
 	
 	@OneToMany(mappedBy = "condominio", targetEntity = Bloco.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<Bloco> blocos;
+	private Set<Bloco> blocos;
 	
 	@OneToMany(mappedBy = "condominio", targetEntity = Area.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<Area> areas;
+	private Set<Area> areas;
 
 	public Long getId() {
 		return id;
@@ -57,22 +57,19 @@ public class Condominio implements Serializable{
 		this.endereco = endereco;
 	}
 
-	public List<Bloco> getBlocos() {
+	public Set<Bloco> getBlocos() {
 		return blocos;
 	}
 
-	public void setBlocos(List<Bloco> blocos) {
+	public void setBlocos(Set<Bloco> blocos) {
 		this.blocos = blocos;
 	}
 
-	public List<Area> getAreas() {
+	public Set<Area> getAreas() {
 		return areas;
 	}
 
-	public void setAreas(List<Area> areas) {
+	public void setAreas(Set<Area> areas) {
 		this.areas = areas;
 	}
-
-
-	
 }

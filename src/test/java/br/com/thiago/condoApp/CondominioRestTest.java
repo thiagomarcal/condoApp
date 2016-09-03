@@ -6,26 +6,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import br.com.thiago.condoApp.modelo.Area;
+import br.com.thiago.condoApp.modelo.Bloco;
 import br.com.thiago.condoApp.modelo.Condominio;
 import br.com.thiago.condoApp.repository.CondominioRepository;
 import br.com.thiago.condoApp.servico.CondominioService;
@@ -41,10 +38,6 @@ public class CondominioRestTest {
 
 	private MockMvc mockMvc;
 
-	private HttpMessageConverter mappingJackson2HttpMessageConverter;
-
-	private List<Condominio> condList = new ArrayList<Condominio>();
-
 	@Autowired
 	private CondominioService condominioService;
 	
@@ -54,68 +47,57 @@ public class CondominioRestTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
-	@Autowired
-	void setConverters(HttpMessageConverter<?>[] converters) {
-
-		this.mappingJackson2HttpMessageConverter = Arrays
-				.asList(converters)
-				.stream()
-				.filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
-				.findAny().get();
-
-		Assert.assertNotNull("the JSON message converter must not be null",
-				this.mappingJackson2HttpMessageConverter);
-	}
-
 	@Before
 	public void setup() throws Exception {
 		
 		this.condominioRepository.deleteAll();
 		
 		Condominio cond1 = new Condominio();
-		cond1.setName("Teste1");
-		cond1.setEndereco("TesteEndereco");
+		cond1.setName("Libertá Resort");
+		cond1.setEndereco("Av Di Cavalcanti 25");
 		
 		Area area1 = new Area();
 		area1.setNome("Sauna");
-		area1.setDescricao("SaunaT");
+		area1.setDescricao("Sauna");
 		area1.setCondominio(cond1);
 		
-//		Condominio cond2 = new Condominio();
-//		cond1.setName("Teste2");
-//		cond1.setEndereco("TesteEndereco2");
-//		
-//		Bloco bloco1 = new Bloco();
-//		bloco1.setCondominio(cond1);
-//		bloco1.setNome("Bloco1");
-//		
-//		Bloco bloco2 = new Bloco();
-//		bloco1.setCondominio(cond1);
-//		bloco1.setNome("Bloco2");
-//		
-//		Bloco bloco3 = new Bloco();
-//		bloco1.setCondominio(cond1);
-//		bloco1.setNome("Bloco3");
+		Area area2 = new Area();
+		area2.setNome("Piscina");
+		area2.setDescricao("Piscina");
+		area2.setCondominio(cond1);
 		
-//		List<Bloco> listaBloco = new ArrayList<Bloco>();
+		Area area3 = new Area();
+		area3.setNome("Salão de Festa");
+		area3.setDescricao("Salão de Festa");
+		area3.setCondominio(cond1);
 		
-//		listaBloco.add(bloco1);
-//		listaBloco.add(bloco2);
-//		listaBloco.add(bloco3);
-//		
-//		cond1.setBlocos(listaBloco);
-//		cond2.setBlocos(listaBloco);
+		Area area4 = new Area();
+		area4.setNome("Churrasqueira");
+		area4.setDescricao("Churrasqueira");
+		area4.setCondominio(cond1);
+				
+		Bloco bloco1 = new Bloco();
+		bloco1.setCondominio(cond1);
+		bloco1.setNome("Bloco1");
 		
+		Bloco bloco2 = new Bloco();
+		bloco2.setCondominio(cond1);
+		bloco2.setNome("Bloco2");
 		
-		List<Area> listaArea = new ArrayList<Area>();
+		Set<Bloco> listaBloco = new HashSet<Bloco>();
+		
+		listaBloco.add(bloco1);
+		listaBloco.add(bloco2);
+		
+		cond1.setBlocos(listaBloco);
+		
+		Set<Area> listaArea = new HashSet<>();
 		listaArea.add(area1);
+		listaArea.add(area2);
 		
 		cond1.setAreas(listaArea);
 		
-		condList.add(cond1);
-		
 		condominioService.save(cond1);
-//		condominioService.save(cond2);
 		
 		this.mockMvc = webAppContextSetup(webApplicationContext).build();
 	}

@@ -3,14 +3,13 @@ package br.com.thiago.condoApp.servico;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.thiago.condoApp.modelo.Condominio;
 import br.com.thiago.condoApp.repository.CondominioRepository;
 
-@Service
-@Transactional
+@Repository
 public class CondominioServiceImpl implements CondominioService {
 	
 	@Autowired
@@ -22,6 +21,7 @@ public class CondominioServiceImpl implements CondominioService {
 	}
 
 	@Override
+	@Transactional
 	public void save(Condominio condominio) {
 		condominioRepository.save(condominio);
 	}
