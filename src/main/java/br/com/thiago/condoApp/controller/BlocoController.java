@@ -13,13 +13,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.thiago.condoApp.modelo.Bloco;
+import br.com.thiago.condoApp.modelo.Edificio;
 import br.com.thiago.condoApp.servico.BlocoService;
+import br.com.thiago.condoApp.servico.EdificioService;
 
 @RestController
 public class BlocoController {
 	
 	@Autowired
 	private BlocoService blocoService;
+	
+	@Autowired
+	private EdificioService edificioService;
 	
 	@RequestMapping(value = "/blocos", method = RequestMethod.GET)
 	public ResponseEntity<List<Bloco>> listar() {
@@ -46,6 +51,13 @@ public class BlocoController {
 	public ResponseEntity<Bloco> update(@RequestBody Bloco area) {
 		blocoService.save(area);
 		return new ResponseEntity<Bloco>(area, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/bloco/{id}/edificio", method = RequestMethod.POST)
+	public ResponseEntity<Edificio> criarEdificio(@PathVariable("id") Long id, @RequestBody Edificio edificio) {
+		edificio.setBloco(blocoService.findOne(id));
+		edificioService.save(edificio);
+		return new ResponseEntity<Edificio>(edificio, HttpStatus.OK);
 	}
 	
 	
