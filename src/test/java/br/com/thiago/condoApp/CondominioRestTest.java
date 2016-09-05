@@ -163,8 +163,8 @@ public class CondominioRestTest {
 		
 		ap1.setMoradores(listaMorador1);
 		ap2.setMoradores(listaMorador2);
-		
-		condominioService.save(cond1);
+	
+		condominioService.save(cond1);	
 		
 		this.mockMvc = webAppContextSetup(webApplicationContext).build();
 	}

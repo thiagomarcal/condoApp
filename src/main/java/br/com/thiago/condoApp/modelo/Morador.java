@@ -1,12 +1,16 @@
 package br.com.thiago.condoApp.modelo;
 
 import java.io.Serializable;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,6 +37,9 @@ public class Morador implements Serializable {
 	@JoinColumn(name = "apartamento_id")
 	@JsonIgnore
 	private Apartamento apartamento;
+	
+	@OneToMany(mappedBy = "morador", targetEntity = Reserva.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Reserva> reservas;
 
 	public Long getId() {
 		return id;
@@ -74,5 +81,12 @@ public class Morador implements Serializable {
 		this.apartamento = apartamento;
 	}
 
+	public Set<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public void setReservas(Set<Reserva> reservas) {
+		this.reservas = reservas;
+	}
 	
 }

@@ -13,13 +13,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.thiago.condoApp.modelo.Area;
+import br.com.thiago.condoApp.modelo.Reserva;
 import br.com.thiago.condoApp.servico.AreaService;
+import br.com.thiago.condoApp.servico.ReservaService;
 
 @RestController
 public class AreaController {
 	
 	@Autowired
 	private AreaService areaService;
+	
+	@Autowired
+	private ReservaService reservaService;
 	
 	@RequestMapping(value = "/areas", method = RequestMethod.GET)
 	public ResponseEntity<List<Area>> listar() {
@@ -48,6 +53,11 @@ public class AreaController {
 		return new ResponseEntity<Area>(area, HttpStatus.OK);
 	}
 	
-	
+	@RequestMapping(value = "/area/{id}/reserva", method = RequestMethod.POST)
+	public ResponseEntity<Reserva> criarReserva(@PathVariable("id") Long id, @RequestBody Reserva reserva) {
+		reserva.setArea(areaService.findOne(id));
+		reservaService.save(reserva);
+		return new ResponseEntity<Reserva>(reserva, HttpStatus.OK);
+	}
 
 }
