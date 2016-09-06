@@ -27,6 +27,7 @@ import br.com.thiago.condoApp.modelo.Bloco;
 import br.com.thiago.condoApp.modelo.Condominio;
 import br.com.thiago.condoApp.modelo.Edificio;
 import br.com.thiago.condoApp.modelo.Morador;
+import br.com.thiago.condoApp.modelo.Veiculo;
 import br.com.thiago.condoApp.repository.CondominioRepository;
 import br.com.thiago.condoApp.servico.CondominioService;
 
@@ -144,6 +145,10 @@ public class CondominioRestTest {
 		ed2.setApartamentos(listaApart2);
 		
 		Morador mr1 = new Morador();
+	
+		Set<Veiculo> veiculo = criarVeiculoParaMorador(mr1);
+		
+		mr1.setVeiculos(veiculo);
 		mr1.setApartamento(ap1);
 		mr1.setCpf("11111111111");
 		mr1.setEmail("thiagormarcal@gmail.com");
@@ -179,6 +184,23 @@ public class CondominioRestTest {
 		mockMvc.perform(get("/condominios"))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(contentType));
+	}
+	
+	
+	public Set<Veiculo> criarVeiculoParaMorador(Morador morador) {
+		Veiculo veiculo = new Veiculo();
+		veiculo.setMarca("BMW");
+		veiculo.setModelo("Z3");
+		veiculo.setPlaca("LLL-1921");
+		veiculo.setRenavan("002928182122");
+		veiculo.setCor("PRETO");
+		veiculo.setMorador(morador);
+		
+		Set<Veiculo> listaVeiculo = new HashSet<>();
+		
+		listaVeiculo.add(veiculo);
+		
+		return listaVeiculo;
 	}
 
 }

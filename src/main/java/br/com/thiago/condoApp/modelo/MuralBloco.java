@@ -23,13 +23,40 @@ public class MuralBloco implements Serializable{
 	@GeneratedValue
 	private Long id;
 	
-	@OneToMany(mappedBy = "mural", targetEntity = Mensagem.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "muralBloco", targetEntity = Mensagem.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Mensagem> mensagens;
 	
 	@ManyToOne
 	@JoinColumn(name = "bloco_id")
 	@JsonIgnore
 	private Bloco bloco;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Set<Mensagem> getMensagens() {
+		return mensagens;
+	}
+
+	public void setMensagens(Set<Mensagem> mensagens) {
+		this.mensagens = mensagens;
+	}
+
+	public Bloco getBloco() {
+		return bloco;
+	}
+
+	public void setBloco(Bloco bloco) {
+		this.bloco = bloco;
+	}
+	
+	
+	
 	
 
 }
