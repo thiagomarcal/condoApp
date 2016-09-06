@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,28 +15,21 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Bloco implements Serializable{
+public class MuralCondominio implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column
 	@GeneratedValue
 	private Long id;
 	
-	@Column
-	private String nome;
+	@OneToMany(mappedBy = "mural", targetEntity = Mensagem.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Mensagem> mensagens;
 	
 	@ManyToOne
 	@JoinColumn(name = "condominio_id")
 	@JsonIgnore
 	private Condominio condominio;
-	
-	@OneToMany(mappedBy = "bloco", targetEntity = Edificio.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Edificio> edificios;
-	
-	@OneToMany(mappedBy = "bloco", targetEntity = MuralBloco.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<MuralBloco> murais;
 
 	public Long getId() {
 		return id;
@@ -47,12 +39,12 @@ public class Bloco implements Serializable{
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public Set<Mensagem> getMensagens() {
+		return mensagens;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setMensagens(Set<Mensagem> mensagens) {
+		this.mensagens = mensagens;
 	}
 
 	public Condominio getCondominio() {
@@ -61,22 +53,6 @@ public class Bloco implements Serializable{
 
 	public void setCondominio(Condominio condominio) {
 		this.condominio = condominio;
-	}
-
-	public Set<Edificio> getEdificios() {
-		return edificios;
-	}
-
-	public void setEdificios(Set<Edificio> edificios) {
-		this.edificios = edificios;
-	}
-
-	public Set<MuralBloco> getMurais() {
-		return murais;
-	}
-
-	public void setMurais(Set<MuralBloco> murais) {
-		this.murais = murais;
 	}
 
 }

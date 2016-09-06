@@ -32,6 +32,9 @@ public class Condominio implements Serializable{
 	
 	@OneToMany(mappedBy = "condominio", targetEntity = Area.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Area> areas;
+	
+	@OneToMany(mappedBy = "condominio", targetEntity = MuralCondominio.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<MuralCondominio> murais;
 
 	public Long getId() {
 		return id;
@@ -72,4 +75,14 @@ public class Condominio implements Serializable{
 	public void setAreas(Set<Area> areas) {
 		this.areas = areas;
 	}
+
+	public Set<MuralCondominio> getMurais() {
+		return murais;
+	}
+
+	public void setMurais(Set<MuralCondominio> murais) {
+		this.murais = murais;
+	}
+
+	
 }
