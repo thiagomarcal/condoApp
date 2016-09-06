@@ -50,4 +50,73 @@ public class Mensagem implements Serializable{
 	private MuralEdificio muralEdificio;
 
 
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public String getMensagem() {
+		return mensagem;
+	}
+
+
+	public void setMensagem(String mensagem) {
+		this.mensagem = mensagem;
+	}
+
+
+	public Date getDataEnvio() {
+		return dataEnvio;
+	}
+
+
+	public void setDataEnvio(Date dataEnvio) {
+		this.dataEnvio = dataEnvio;
+	}
+
+
+	public byte[] getPicture() {
+		return picture;
+	}
+
+
+	public void setPicture(byte[] picture) {
+		this.picture = picture;
+	}
+
+
+	public MuralBloco getMuralBloco() {
+		return muralBloco;
+	}
+
+
+	public void setMuralBloco(MuralBloco muralBloco) {
+		this.muralBloco = muralBloco;
+	}
+
+
+	public MuralCondominio getMuralCondominio() {
+		return muralCondominio;
+	}
+
+
+	public void setMuralCondominio(MuralCondominio muralCondominio) {
+		this.muralCondominio = muralCondominio;
+	}
+
+
+	public MuralEdificio getMuralEdificio() {
+		return muralEdificio;
+	}
+
+
+	public void setMuralEdificio(MuralEdificio muralEdificio) {
+		this.muralEdificio = muralEdificio;
+	}
+	
 }
