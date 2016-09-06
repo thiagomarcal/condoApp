@@ -25,7 +25,20 @@ public class Condominio implements Serializable{
 	private String name;
 	
 	@Column
-	private String endereco;
+	private String logradouro;
+	
+	@Column
+	private String numero;
+	
+	@Column
+	private String cidade;
+	
+	@Column
+	private String uf;
+	
+	@Column
+	private String cpnj;
+	
 	
 	@OneToMany(mappedBy = "condominio", targetEntity = Bloco.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Bloco> blocos;
@@ -52,12 +65,44 @@ public class Condominio implements Serializable{
 		this.name = name;
 	}
 
-	public String getEndereco() {
-		return endereco;
+	public String getLogradouro() {
+		return logradouro;
 	}
 
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+	
+	public String getNumero(){
+		return numero;
+	}
+	
+	public void setNumero(String numero){
+		this.numero = numero;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getUf() {
+		return uf;
+	}
+
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
+
+	public String getCpnj() {
+		return cpnj;
+	}
+
+	public void setCpnj(String cpnj) {
+		this.cpnj = cpnj;
 	}
 
 	public Set<Bloco> getBlocos() {
