@@ -27,6 +27,7 @@ import br.com.thiago.condoApp.modelo.Bloco;
 import br.com.thiago.condoApp.modelo.Condominio;
 import br.com.thiago.condoApp.modelo.Edificio;
 import br.com.thiago.condoApp.modelo.Morador;
+import br.com.thiago.condoApp.modelo.Veiculo;
 import br.com.thiago.condoApp.repository.CondominioRepository;
 import br.com.thiago.condoApp.servico.CondominioService;
 
@@ -55,28 +56,19 @@ public class CondominioRestTest {
 		
 		this.condominioRepository.deleteAll();
 		
-		Condominio cond1 = new Condominio();
-		cond1.setName("Libertá Resort");
-		cond1.setEndereco("Av Di Cavalcanti 25");
+			
+		Condominio cond1 = criarCondominio();
 		
-		Area area1 = new Area();
-		area1.setNome("Sauna");
-		area1.setDescricao("Sauna");
+		Area area1 = criarArea("Sauna");
 		area1.setCondominio(cond1);
 		
-		Area area2 = new Area();
-		area2.setNome("Piscina");
-		area2.setDescricao("Piscina");
+		Area area2 = criarArea("Piscina");
 		area2.setCondominio(cond1);
 		
-		Area area3 = new Area();
-		area3.setNome("Salão de Festa");
-		area3.setDescricao("Salão de Festa");
+		Area area3 = criarArea("Salão de Festa");
 		area3.setCondominio(cond1);
 		
-		Area area4 = new Area();
-		area4.setNome("Churrasqueira");
-		area4.setDescricao("Churrasqueira");
+		Area area4 = criarArea("Churrasqueira");
 		area4.setCondominio(cond1);
 		
 		Set<Area> listaArea = new HashSet<>();
@@ -87,13 +79,10 @@ public class CondominioRestTest {
 		
 		cond1.setAreas(listaArea);
 				
-		Bloco bloco1 = new Bloco();
-		bloco1.setCondominio(cond1);
-		bloco1.setNome("Bloco1");
+		Bloco bloco1 = criarBloco("Bloco 1", cond1);
 		
-		Bloco bloco2 = new Bloco();
-		bloco2.setCondominio(cond1);
-		bloco2.setNome("Bloco2");
+		Bloco bloco2 = criarBloco("Bloco 2", cond1);
+		
 		
 		Set<Bloco> listaBloco = new HashSet<Bloco>();
 		
@@ -144,6 +133,10 @@ public class CondominioRestTest {
 		ed2.setApartamentos(listaApart2);
 		
 		Morador mr1 = new Morador();
+	
+		Set<Veiculo> veiculo = criarVeiculoParaMorador(mr1);
+		
+		mr1.setVeiculos(veiculo);
 		mr1.setApartamento(ap1);
 		mr1.setCpf("11111111111");
 		mr1.setEmail("thiagormarcal@gmail.com");
@@ -180,5 +173,57 @@ public class CondominioRestTest {
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(contentType));
 	}
+	
+	
+	public Set<Veiculo> criarVeiculoParaMorador(Morador morador) {
+		Veiculo veiculo = new Veiculo();
+		veiculo.setMarca("BMW");
+		veiculo.setModelo("Z3");
+		veiculo.setPlaca("LLL-1921");
+		veiculo.setRenavan("002928182122");
+		veiculo.setCor("PRETO");
+		veiculo.setMorador(morador);
+		
+		Veiculo veiculoNovo = new Veiculo();
+		veiculoNovo.setMarca("AUDI");
+		veiculoNovo.setModelo("TT");
+		veiculoNovo.setPlaca("AXD-1921");
+		veiculoNovo.setRenavan("1291283812");
+		veiculoNovo.setCor("PRETO");
+		veiculoNovo.setMorador(morador);
+		
+		Set<Veiculo> listaVeiculo = new HashSet<>();
+		
+		listaVeiculo.add(veiculo);
+		listaVeiculo.add(veiculoNovo);
+		
+		return listaVeiculo;
+	}
 
+	
+	public Condominio criarCondominio(){
+		Condominio condominio = new Condominio();
+		condominio.setName("Condominio Beija-Flor");
+		condominio.setLogradouro("Estrada João Paulo");
+		condominio.setNumero("260");
+		condominio.setUf("RJ");
+		
+		return condominio;
+	}
+	
+	public Area criarArea(String nomeArea){
+		Area area = new Area();
+		area.setNome(nomeArea);
+		area.setDescricao(nomeArea);
+		
+		return area;
+	}
+	
+	public Bloco criarBloco(String nomeBloco, Condominio condominio){
+		Bloco bloco = new Bloco();
+		bloco.setNome("Bloco 1");
+		bloco.setCondominio(condominio);
+		return bloco;
+	}
+	
 }

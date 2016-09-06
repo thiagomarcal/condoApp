@@ -23,7 +23,7 @@ public class MuralCondominio implements Serializable{
 	@GeneratedValue
 	private Long id;
 	
-	@OneToMany(mappedBy = "mural", targetEntity = Mensagem.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "muralCondominio", targetEntity = Mensagem.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Mensagem> mensagens;
 	
 	@ManyToOne

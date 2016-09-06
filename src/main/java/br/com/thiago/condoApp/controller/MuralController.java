@@ -44,7 +44,7 @@ public class MuralController {
 	private EdificioService edificioService;
 	
 	// Mural Condominio
-	@RequestMapping(value = "/muralCondominio", method = RequestMethod.GET)
+	@RequestMapping(value = "/muralCondominios", method = RequestMethod.GET)
 	public ResponseEntity<List<MuralCondominio>> listarCondominio() {
 		return new ResponseEntity<List<MuralCondominio>>(muralCondominioService.findAll(), HttpStatus.OK);
 	}
@@ -79,7 +79,7 @@ public class MuralController {
 	
 	
 	// Mural Bloco
-	@RequestMapping(value = "/muralBloco", method = RequestMethod.GET)
+	@RequestMapping(value = "/muralBlocos", method = RequestMethod.GET)
 	public ResponseEntity<List<MuralBloco>> listarBloco() {
 		return new ResponseEntity<List<MuralBloco>>(muralBlocoService.findAll(), HttpStatus.OK);
 	}
@@ -114,7 +114,7 @@ public class MuralController {
 	
 	
 	// Mural Edificio
-	@RequestMapping(value = "/muralEdificio", method = RequestMethod.GET)
+	@RequestMapping(value = "/muralEdificios", method = RequestMethod.GET)
 	public ResponseEntity<List<MuralEdificio>> listarEdificio() {
 		return new ResponseEntity<List<MuralEdificio>>(muralEdificioService.findAll(), HttpStatus.OK);
 	}
