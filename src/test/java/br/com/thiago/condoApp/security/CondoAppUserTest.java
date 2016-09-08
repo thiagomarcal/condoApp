@@ -46,12 +46,11 @@ public class CondoAppUserTest {
 
 	@Test
 	public void chamandoConstrutorFactoryComParametros() {
-		CondoUser condoUser = new CondoUser(ID, USERNAME, PASSWORD, EMAIL, LAST_PASSWORD_RESET, AUTHORITIES);
+		CondoUser condoUser = new CondoUser(ID, USERNAME, PASSWORD, LAST_PASSWORD_RESET, AUTHORITIES);
 
 		assertThat(condoUser.getId(), is(ID));
 		assertThat(condoUser.getUsername(), is(USERNAME));
 		assertThat(condoUser.getPassword(), is(PASSWORD));
-		assertThat(condoUser.getEmail(), is(EMAIL));
 		assertThat(condoUser.getLastPasswordReset(), is(LAST_PASSWORD_RESET));
 		assertEquals(condoUser.getAuthorities(), AUTHORITIES);
 		assertTrue(condoUser.getAccountNonExpired());

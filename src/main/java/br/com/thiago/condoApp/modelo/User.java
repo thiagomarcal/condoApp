@@ -3,10 +3,13 @@ package br.com.thiago.condoApp.modelo;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,22 +21,23 @@ public class User implements Serializable{
 	private Long id;
 	private String username;
 	private String password;
-	private String email;
 	private Date lastPasswordReset;
 	private String authorities;
 	
-	
+	@OneToOne(mappedBy = "user", targetEntity = Pessoa.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Pessoa pessoa;
+
 	public User() {
 		super();
 	}
 
 
-	public User(String username, String password, String email, Date lastPasswordReset, String authorities) {
+	public User(String username, String password, String email, Date lastPasswordReset, String authorities, Pessoa pessoa) {
 		this.username = username;
 		this.password = password;
-		this.email = email;
 		this.lastPasswordReset = lastPasswordReset;
 		this.authorities = authorities;
+		this.pessoa = pessoa;
 	}
 
 	@Id
@@ -68,16 +72,6 @@ public class User implements Serializable{
 		this.password = password;
 	}
 
-	@Column(name = "email")
-	public String getEmail() {
-		return email;
-	}
-
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	@Column(name = "last_password_reset")
 	public Date getLastPasswordReset() {
 		return lastPasswordReset;
@@ -97,5 +91,17 @@ public class User implements Serializable{
 	public void setAuthorities(String authorities) {
 		this.authorities = authorities;
 	}
+
+
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
+	}
+	
+	
 
 }

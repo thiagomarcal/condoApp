@@ -2,6 +2,7 @@ package br.com.thiago.condoApp.servico;
 
 import java.util.List;
 
+import br.com.thiago.condoApp.modelo.Apartamento;
 import br.com.thiago.condoApp.modelo.Morador;
 
 public interface MoradorService {
@@ -10,6 +11,6 @@ public interface MoradorService {
 	public void save(Morador morador);
 	public Morador findOne(Long id);
 	public void delete(Long id);
-	public List<Morador> findByNome(String nome);
+	public List<Morador> findByApartamento(Apartamento apartamento);
 
 }

@@ -31,13 +31,12 @@ public class CondoUser implements UserDetails{
 	
 	
 
-	public CondoUser(Long id, String username, String password, String email, Date lastPasswordReset,
+	public CondoUser(Long id, String username, String password, Date lastPasswordReset,
 			Collection<? extends GrantedAuthority> authorities) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
-		this.email = email;
 		this.lastPasswordReset = lastPasswordReset;
 		this.authorities = authorities;
 	}

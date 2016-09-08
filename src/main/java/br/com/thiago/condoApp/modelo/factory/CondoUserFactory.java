@@ -10,8 +10,7 @@ public class CondoUserFactory {
 		return new CondoUser(
 				user.getId(), 
 				user.getUsername(), 
-				user.getPassword(), 
-				user.getEmail(), 
+				user.getPassword(),  
 				user.getLastPasswordReset(),
 				AuthorityUtils.commaSeparatedStringToAuthorityList(user.getAuthorities()));
 	}

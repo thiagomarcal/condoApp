@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,28 +22,22 @@ public class Morador implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
-	@Column
-	private String nome;
-	
-	@Column
-	private String email;
-	
-	@Column
-	private String cpf;
-	
+
 	@OneToOne
 	@JoinColumn(name = "apartamento_id")
 	@JsonIgnore
 	private Apartamento apartamento;
 	
+	@OneToOne
+	@JoinColumn(name = "pessoa_id")
+	@JsonIgnore
+	private Pessoa pessoa;
+	
 	@OneToMany(mappedBy = "morador", targetEntity = Reserva.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Reserva> reservas;
 	
-	
 	@OneToMany(mappedBy = "morador", targetEntity = Veiculo.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Veiculo> veiculos;
-	
 
 	public Long getId() {
 		return id;
@@ -54,36 +47,20 @@ public class Morador implements Serializable {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
 	public Apartamento getApartamento() {
 		return apartamento;
 	}
 
 	public void setApartamento(Apartamento apartamento) {
 		this.apartamento = apartamento;
+	}
+
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 
 	public Set<Reserva> getReservas() {
@@ -101,7 +78,5 @@ public class Morador implements Serializable {
 	public void setVeiculos(Set<Veiculo> veiculos) {
 		this.veiculos = veiculos;
 	}
-	
-	
 	
 }

@@ -1,13 +1,8 @@
 package br.com.thiago.condoApp;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import java.nio.charset.Charset;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -27,9 +22,17 @@ import br.com.thiago.condoApp.modelo.Bloco;
 import br.com.thiago.condoApp.modelo.Condominio;
 import br.com.thiago.condoApp.modelo.Edificio;
 import br.com.thiago.condoApp.modelo.Morador;
+import br.com.thiago.condoApp.modelo.Pessoa;
 import br.com.thiago.condoApp.modelo.Veiculo;
 import br.com.thiago.condoApp.repository.CondominioRepository;
+import br.com.thiago.condoApp.servico.ApartamentoService;
+import br.com.thiago.condoApp.servico.AreaService;
+import br.com.thiago.condoApp.servico.BlocoService;
 import br.com.thiago.condoApp.servico.CondominioService;
+import br.com.thiago.condoApp.servico.EdificioService;
+import br.com.thiago.condoApp.servico.MoradorService;
+import br.com.thiago.condoApp.servico.PessoaService;
+import br.com.thiago.condoApp.servico.VeiculoService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = App.class)
@@ -46,6 +49,27 @@ public class CondominioRestTest {
 	private CondominioService condominioService;
 	
 	@Autowired
+	private AreaService areaService;
+	
+	@Autowired
+	private BlocoService blocoService;
+	
+	@Autowired
+	private EdificioService edificioService;
+	
+	@Autowired
+	private ApartamentoService apartamentoService;
+	
+	@Autowired
+	private PessoaService pessoaService;
+	
+	@Autowired
+	private MoradorService moradorService;
+	
+	@Autowired
+	private VeiculoService veiculoService;
+	
+	@Autowired
 	private CondominioRepository condominioRepository;
 
 	@Autowired
@@ -55,110 +79,6 @@ public class CondominioRestTest {
 	public void setup() throws Exception {
 		
 		this.condominioRepository.deleteAll();
-		
-			
-		Condominio cond1 = criarCondominio();
-		
-		Area area1 = criarArea("Sauna");
-		area1.setCondominio(cond1);
-		
-		Area area2 = criarArea("Piscina");
-		area2.setCondominio(cond1);
-		
-		Area area3 = criarArea("Salão de Festa");
-		area3.setCondominio(cond1);
-		
-		Area area4 = criarArea("Churrasqueira");
-		area4.setCondominio(cond1);
-		
-		Set<Area> listaArea = new HashSet<>();
-		listaArea.add(area1);
-		listaArea.add(area2);
-		listaArea.add(area3);
-		listaArea.add(area4);
-		
-		cond1.setAreas(listaArea);
-				
-		Bloco bloco1 = criarBloco("Bloco 1", cond1);
-		
-		Bloco bloco2 = criarBloco("Bloco 2", cond1);
-		
-		
-		Set<Bloco> listaBloco = new HashSet<Bloco>();
-		
-		listaBloco.add(bloco1);
-		listaBloco.add(bloco2);
-		
-		cond1.setBlocos(listaBloco);
-		
-		Edificio ed1 = new Edificio();
-		ed1.setNome("Ed1");
-		ed1.setDescricao("Ed1Desc");
-		ed1.setBloco(bloco1);
-		
-		Edificio ed2 = new Edificio();
-		ed2.setNome("Ed2");
-		ed2.setDescricao("Ed2Desc");
-		ed2.setBloco(bloco2);
-		
-		Set<Edificio> listaEdificio1 = new HashSet<>();
-		listaEdificio1.add(ed1);
-		
-		Set<Edificio> listaEdificio2 = new HashSet<>();
-		listaEdificio2.add(ed2);
-		
-		bloco1.setEdificios(listaEdificio1);
-		bloco2.setEdificios(listaEdificio2);
-		
-		
-		Apartamento ap1 = new Apartamento();
-		ap1.setEdificio(ed1);
-		ap1.setNumero(101L);
-		ap1.setNome("Ap 101");
-		
-		Set<Apartamento> listaApart1 = new HashSet<>();
-		listaApart1.add(ap1);
-		
-		ed1.setApartamentos(listaApart1);
-		
-		
-		Apartamento ap2 = new Apartamento();
-		ap2.setEdificio(ed2);
-		ap2.setNumero(101L);
-		ap2.setNome("Ap 101");
-		
-		Set<Apartamento> listaApart2 = new HashSet<>();
-		listaApart2.add(ap2);
-		
-		ed2.setApartamentos(listaApart2);
-		
-		Morador mr1 = new Morador();
-	
-		Set<Veiculo> veiculo = criarVeiculoParaMorador(mr1);
-		
-		mr1.setVeiculos(veiculo);
-		mr1.setApartamento(ap1);
-		mr1.setCpf("11111111111");
-		mr1.setEmail("thiagormarcal@gmail.com");
-		mr1.setNome("Thiago Marcal");
-		
-		Set<Morador> listaMorador1 = new HashSet<>();
-		listaMorador1.add(mr1);
-		
-		Morador mr2 = new Morador();
-		mr2.setApartamento(ap2);
-		mr2.setCpf("222222222");
-		mr2.setEmail("johndoe@gmail.com");
-		mr2.setNome("John Doe");
-		
-		Set<Morador> listaMorador2 = new HashSet<>();
-		listaMorador2.add(mr2);
-		
-		ap1.setMoradores(listaMorador1);
-		ap2.setMoradores(listaMorador2);
-	
-		condominioService.save(cond1);	
-		
 		this.mockMvc = webAppContextSetup(webApplicationContext).build();
 	}
 	
@@ -168,62 +88,121 @@ public class CondominioRestTest {
 	}
 	
 	@Test
-	public void readCondominios() throws Exception {
-		mockMvc.perform(get("/condominios"))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(contentType));
-	}
+	public void criaCondominioTest() throws Exception {
+		Condominio cond = criaCondominio();
+		
+		Area area1 = criaArea("Sauna", "Sauna", cond);
+		Area area2 = criaArea("Piscina", "Piscina", cond);
+		Area area3 = criaArea("Salão de Festa", "Salão de Festa", cond);
+		Area area4 = criaArea("Churrasqueira", "Churrasqueira", cond);
 	
+		Bloco bloco1 = criaBloco("Bloco 1", cond);
+		Bloco bloco2 = criaBloco("Bloco 2", cond);
 	
-	public Set<Veiculo> criarVeiculoParaMorador(Morador morador) {
-		Veiculo veiculo = new Veiculo();
-		veiculo.setMarca("BMW");
-		veiculo.setModelo("Z3");
-		veiculo.setPlaca("LLL-1921");
-		veiculo.setRenavan("002928182122");
-		veiculo.setCor("PRETO");
-		veiculo.setMorador(morador);
+		Edificio edf1 = criaEdificio("Ed1", "Ed1Desc", bloco1);
+		Edificio edf2 = criaEdificio("Ed2", "Ed2Desc", bloco1);
 		
-		Veiculo veiculoNovo = new Veiculo();
-		veiculoNovo.setMarca("AUDI");
-		veiculoNovo.setModelo("TT");
-		veiculoNovo.setPlaca("AXD-1921");
-		veiculoNovo.setRenavan("1291283812");
-		veiculoNovo.setCor("PRETO");
-		veiculoNovo.setMorador(morador);
+		Apartamento ap1 = criaApartamento("Ap 101", 101L, edf1);
+		Apartamento ap2 = criaApartamento("Ap 102", 102L, edf2);
 		
-		Set<Veiculo> listaVeiculo = new HashSet<>();
+		Pessoa p1 = criaPessoa("111111", "balbal@ashuu.com", "John Doe");
+		Pessoa p2 = criaPessoa("222222", "thiagormarcal@gmail.com", "Thiago Marcal");
 		
-		listaVeiculo.add(veiculo);
-		listaVeiculo.add(veiculoNovo);
+		Morador mr1 = criaMorador(ap1, p1);
+		Morador mr2 = criaMorador(ap2, p2);
 		
-		return listaVeiculo;
+		Veiculo veic = criaVeiculo("BMW", "Z3", "LLL-1921", "002928182122", "PRETO", mr1);
+		
+		
 	}
 
-	
-	public Condominio criarCondominio(){
+	private Veiculo criaVeiculo(String marca, String modelo, String placa, String Renavan, String cor, Morador morador) {
+		Veiculo veiculo = new Veiculo();
+		veiculo.setMarca(marca);
+		veiculo.setModelo(modelo);
+		veiculo.setPlaca(placa);
+		veiculo.setRenavan(Renavan);
+		veiculo.setCor(cor);
+		veiculo.setMorador(morador);
+		
+		this.veiculoService.save(veiculo);
+		return veiculo;
+	}
+
+	private Morador criaMorador(Apartamento apartamento, Pessoa pessoa) {
+		Morador mr1 = new Morador();
+		mr1.setApartamento(apartamento);
+		mr1.setPessoa(pessoa);
+		
+		this.moradorService.save(mr1);
+		return mr1;
+		
+	}
+
+	private Pessoa criaPessoa(String cpf, String email, String nome) {
+		Pessoa p1 = new Pessoa();		
+		p1.setCpf(cpf);
+		p1.setEmail(email);
+		p1.setNome(nome);
+		
+		this.pessoaService.save(p1);
+		return p1;
+		
+	}
+
+	private Apartamento criaApartamento(String nome, Long numero, Edificio edificio) {
+		Apartamento ap1 = new Apartamento();
+		ap1.setEdificio(edificio);
+		ap1.setNumero(numero);
+		ap1.setNome(nome);
+		
+		this.apartamentoService.save(ap1);
+		
+		return ap1;
+		
+	}
+
+	private Edificio criaEdificio(String nome, String descricao, Bloco bloco) {
+		Edificio ed1 = new Edificio();
+		ed1.setNome(nome);
+		ed1.setDescricao(descricao);
+		ed1.setBloco(bloco);
+		
+		this.edificioService.save(ed1);
+		return ed1;
+	}
+
+	private Bloco criaBloco(String nome, Condominio condominio) {
+		Bloco bloco1 = new Bloco();
+		bloco1.setNome("nome");
+		bloco1.setCondominio(condominio);
+		
+		this.blocoService.save(bloco1);
+		return bloco1;
+	}
+
+	private Area criaArea(String nome, String descricao, Condominio condominio) {
+		Area area1 = new Area();
+		area1.setNome(nome);
+		area1.setDescricao(descricao);
+		area1.setCondominio(condominio);
+		
+		this.areaService.save(area1);
+		
+		return area1;
+	}
+
+	private Condominio criaCondominio() {
 		Condominio condominio = new Condominio();
-		condominio.setName("Condominio Beija-Flor");
-		condominio.setLogradouro("Estrada João Paulo");
-		condominio.setNumero("260");
+		condominio.setName("Liberta Resort");
+		condominio.setLogradouro("Av Di Cavalcanti");
+		condominio.setNumero("25");
 		condominio.setUf("RJ");
 		
-		return condominio;
-	}
-	
-	public Area criarArea(String nomeArea){
-		Area area = new Area();
-		area.setNome(nomeArea);
-		area.setDescricao(nomeArea);
+		this.condominioService.save(condominio);
 		
-		return area;
-	}
-	
-	public Bloco criarBloco(String nomeBloco, Condominio condominio){
-		Bloco bloco = new Bloco();
-		bloco.setNome("Bloco 1");
-		bloco.setCondominio(condominio);
-		return bloco;
+		return condominio;
+		
 	}
 	
 }
