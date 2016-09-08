@@ -3,6 +3,7 @@ package br.com.thiago.condoApp.modelo;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -10,6 +11,7 @@ import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+@Entity
 public class Encomenda implements Serializable{
 
 private static final long serialVersionUID = 1L;
@@ -19,7 +21,7 @@ private static final long serialVersionUID = 1L;
 	private Long id;
 	
 	@Column
-	private String tipoEncomenda;
+	private String tipo;
 	
 	@OneToOne
 	@JoinColumn(name = "apartamento_id")
@@ -34,12 +36,12 @@ private static final long serialVersionUID = 1L;
 		this.id = id;
 	}
 
-	public String getTipoEncomenda() {
-		return tipoEncomenda;
+	public String getTip() {
+		return tipo;
 	}
 
-	public void setTipoEncomenda(String tipoEncomenda) {
-		this.tipoEncomenda = tipoEncomenda;
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 	public Apartamento getApartamento() {

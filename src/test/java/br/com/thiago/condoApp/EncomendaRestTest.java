@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 import java.nio.charset.Charset;
 
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,7 +62,7 @@ public class EncomendaRestTest {
 		
 		Encomenda encomenda1 = new Encomenda();
 		encomenda1.setApartamento(apartamento);
-		encomenda1.setTipoEncomenda("CORREIOS");
+		encomenda1.setTipo("CORREIOS");
 		
 		encomendaService.save(encomenda1);
 		

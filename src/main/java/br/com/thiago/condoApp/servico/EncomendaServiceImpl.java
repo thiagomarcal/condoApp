@@ -3,6 +3,7 @@ package br.com.thiago.condoApp.servico;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.thiago.condoApp.modelo.Encomenda;
