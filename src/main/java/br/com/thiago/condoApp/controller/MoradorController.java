@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.thiago.condoApp.modelo.Morador;
+import br.com.thiago.condoApp.servico.ApartamentoService;
 import br.com.thiago.condoApp.servico.MoradorService;
 
 @RestController
@@ -21,14 +22,17 @@ public class MoradorController {
 	@Autowired
 	private MoradorService moradorService;
 	
+	@Autowired
+	private ApartamentoService apartamentoService;
+	
 	@RequestMapping(value = "/moradores", method = RequestMethod.GET)
 	public ResponseEntity<List<Morador>> listar() {
 		return new ResponseEntity<List<Morador>>(moradorService.findAll(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/morador", method = RequestMethod.GET)
-	public ResponseEntity<List<Morador>> listarPorNome(@RequestParam("nome") String nome) {
-		return new ResponseEntity<List<Morador>>(moradorService.findByNome(nome), HttpStatus.OK);
+	public ResponseEntity<List<Morador>> listarPorApartamento(@RequestParam("apartamentoId") Long apartamentoId) {
+		return new ResponseEntity<List<Morador>>(moradorService.findByApartamento(apartamentoService.findOne(apartamentoId)), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/morador/{id}", method = RequestMethod.GET)

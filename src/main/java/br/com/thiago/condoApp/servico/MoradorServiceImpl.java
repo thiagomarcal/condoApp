@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.thiago.condoApp.modelo.Apartamento;
 import br.com.thiago.condoApp.modelo.Morador;
 import br.com.thiago.condoApp.repository.MoradorRepository;
 
@@ -37,8 +38,8 @@ public class MoradorServiceImpl implements MoradorService {
 	}
 
 	@Override
-	public List<Morador> findByNome(String nome) {
-		return moradorRepository.findByNome(nome);
+	public List<Morador> findByApartamento(Apartamento apartamento) {
+		return moradorRepository.findByApartamento(apartamento);
 	}
 
 }
