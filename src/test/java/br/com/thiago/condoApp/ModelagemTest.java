@@ -1,8 +1,5 @@
 package br.com.thiago.condoApp;
 
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
-
-import java.nio.charset.Charset;
 import java.util.Date;
 
 import org.junit.After;
@@ -11,10 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import br.com.thiago.condoApp.modelo.Apartamento;
@@ -27,7 +22,16 @@ import br.com.thiago.condoApp.modelo.Morador;
 import br.com.thiago.condoApp.modelo.Pessoa;
 import br.com.thiago.condoApp.modelo.Veiculo;
 import br.com.thiago.condoApp.modelo.Visitante;
+import br.com.thiago.condoApp.repository.ApartamentoRepository;
+import br.com.thiago.condoApp.repository.AreaRepository;
+import br.com.thiago.condoApp.repository.BlocoRepository;
 import br.com.thiago.condoApp.repository.CondominioRepository;
+import br.com.thiago.condoApp.repository.EdificioRepository;
+import br.com.thiago.condoApp.repository.EncomendaRepository;
+import br.com.thiago.condoApp.repository.MoradorRepository;
+import br.com.thiago.condoApp.repository.PessoaRepository;
+import br.com.thiago.condoApp.repository.VeiculoRepository;
+import br.com.thiago.condoApp.repository.VisitanteRepository;
 import br.com.thiago.condoApp.servico.ApartamentoService;
 import br.com.thiago.condoApp.servico.AreaService;
 import br.com.thiago.condoApp.servico.BlocoService;
@@ -42,14 +46,7 @@ import br.com.thiago.condoApp.servico.VisitanteService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = App.class)
 @WebAppConfiguration
-public class CondominioAllServiceRestTest {
-	
-
-	private MediaType contentType = new MediaType(
-			MediaType.APPLICATION_JSON.getType(),
-			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
-
-	private MockMvc mockMvc;
+public class ModelagemTest {
 
 	@Autowired
 	private CondominioService condominioService;
@@ -75,12 +72,38 @@ public class CondominioAllServiceRestTest {
 	@Autowired
 	private VeiculoService veiculoService;
 	
-
 	@Autowired
 	private EncomendaService encomendaService;
 	
 	@Autowired
 	private VisitanteService visitanteService;
+	
+	@Autowired
+	private VisitanteRepository visitanteRepository;
+	
+	@Autowired
+	private EncomendaRepository encomendaRepository;
+	
+	@Autowired
+	private VeiculoRepository veiculoRepository;
+	
+	@Autowired
+	private MoradorRepository moradorRepository;
+	
+	@Autowired
+	private PessoaRepository pessoaRepository;
+	
+	@Autowired
+	private ApartamentoRepository apartamentoRepository;
+	
+	@Autowired
+	private EdificioRepository edificioRepository;
+	
+	@Autowired
+	private BlocoRepository blocoRepository;
+	
+	@Autowired
+	private AreaRepository areaRepository;
 	
 	@Autowired
 	private CondominioRepository condominioRepository;
@@ -90,9 +113,16 @@ public class CondominioAllServiceRestTest {
 
 	@Before
 	public void setup() throws Exception {
-		
+		this.visitanteRepository.deleteAll();
+		this.encomendaRepository.deleteAll();
+		this.veiculoRepository.deleteAll();
+		this.moradorRepository.deleteAll();
+		this.pessoaRepository.deleteAll();
+		this.apartamentoRepository.deleteAll();
+		this.edificioRepository.deleteAll();
+		this.blocoRepository.deleteAll();
+		this.areaRepository.deleteAll();
 		this.condominioRepository.deleteAll();
-		this.mockMvc = webAppContextSetup(webApplicationContext).build();
 	}
 	
 	@After
@@ -102,15 +132,15 @@ public class CondominioAllServiceRestTest {
 	
 	@Test
 	public void criaCondominioTest() throws Exception {
-		Condominio cond = criaCondominio();
+		Condominio cond = criaCondominio("Liberta Resort","Av Di Cavalcanti", "25", "RJ" );
 		
-		Area area1 = criaArea("Sauna", "Sauna", cond);
-		Area area2 = criaArea("Piscina", "Piscina", cond);
-		Area area3 = criaArea("Salão de Festa", "Salão de Festa", cond);
-		Area area4 = criaArea("Churrasqueira", "Churrasqueira", cond);
+		criaArea("Sauna", "Sauna", cond);
+		criaArea("Piscina", "Piscina", cond);
+		criaArea("Salão de Festa", "Salão de Festa", cond);
+		criaArea("Churrasqueira", "Churrasqueira", cond);
 	
 		Bloco bloco1 = criaBloco("Bloco 1", cond);
-		Bloco bloco2 = criaBloco("Bloco 2", cond);
+		criaBloco("Bloco 2", cond);
 	
 		Edificio edf1 = criaEdificio("Ed1", "Ed1Desc", bloco1);
 		Edificio edf2 = criaEdificio("Ed2", "Ed2Desc", bloco1);
@@ -122,13 +152,13 @@ public class CondominioAllServiceRestTest {
 		Pessoa p2 = criaPessoa("222222", "thiagormarcal@gmail.com", "Thiago Marcal");
 		
 		Morador mr1 = criaMorador(ap1, p1);
-		Morador mr2 = criaMorador(ap2, p2);
+		criaMorador(ap2, p2);
 		
-		Veiculo veic = criaVeiculo("BMW", "Z3", "LLL-1921", "002928182122", "PRETO", mr1);
+		criaVeiculo("BMW", "Z3", "LLL-1921", "002928182122", "PRETO", mr1);
 		
-		Encomenda encomenda = criarEncomenda("CORREIOS", ap1);
+		criarEncomenda("CORREIOS", ap1);
 		
-		Visitante visitante = criarVisitante("Carla Azevedo", ap2);
+		criarVisitante("Carla Azevedo", ap2);
 		
 	}
 	
@@ -136,7 +166,7 @@ public class CondominioAllServiceRestTest {
 	private Encomenda criarEncomenda(String tipo, Apartamento apartamento) {
 		Encomenda encomenda = new Encomenda();
 		encomenda.setApartamento(apartamento);
-		encomenda.setTipo("CORREIOS");
+		encomenda.setTipo(tipo);
 		
 		this.encomendaService.save(encomenda);
 		
@@ -212,7 +242,7 @@ public class CondominioAllServiceRestTest {
 
 	private Bloco criaBloco(String nome, Condominio condominio) {
 		Bloco bloco1 = new Bloco();
-		bloco1.setNome("nome");
+		bloco1.setNome(nome);
 		bloco1.setCondominio(condominio);
 		
 		this.blocoService.save(bloco1);
@@ -230,17 +260,19 @@ public class CondominioAllServiceRestTest {
 		return area1;
 	}
 
-	private Condominio criaCondominio() {
+	private Condominio criaCondominio(String name, String logradouro, String numero, String uf) {
 		Condominio condominio = new Condominio();
-		condominio.setName("Liberta Resort");
-		condominio.setLogradouro("Av Di Cavalcanti");
-		condominio.setNumero("25");
-		condominio.setUf("RJ");
+		condominio.setName(name);
+		condominio.setLogradouro(logradouro);
+		condominio.setNumero(numero);
+		condominio.setUf(uf);
 		
 		this.condominioService.save(condominio);
 		
 		return condominio;
 		
 	}
+	
+	
 
 }
