@@ -131,7 +131,7 @@ public class ModelagemTest {
 	}
 	
 	@Test
-	public void criaCondominioTest() throws Exception {
+	public void criaTest() throws Exception {
 		Condominio cond = criaCondominio("Liberta Resort","Av Di Cavalcanti", "25", "RJ" );
 		
 		criaArea("Sauna", "Sauna", cond);
@@ -140,10 +140,10 @@ public class ModelagemTest {
 		criaArea("Churrasqueira", "Churrasqueira", cond);
 	
 		Bloco bloco1 = criaBloco("Bloco 1", cond);
-		criaBloco("Bloco 2", cond);
+		Bloco bloco2 = criaBloco("Bloco 2", cond);
 	
 		Edificio edf1 = criaEdificio("Ed1", "Ed1Desc", bloco1);
-		Edificio edf2 = criaEdificio("Ed2", "Ed2Desc", bloco1);
+		Edificio edf2 = criaEdificio("Ed2", "Ed2Desc", bloco2);
 		
 		Apartamento ap1 = criaApartamento("Ap 101", 101L, edf1);
 		Apartamento ap2 = criaApartamento("Ap 102", 102L, edf2);
@@ -159,6 +159,8 @@ public class ModelagemTest {
 		criarEncomenda("CORREIOS", ap1);
 		
 		criarVisitante("Carla Azevedo", ap2);
+		
+		
 		
 	}
 	
