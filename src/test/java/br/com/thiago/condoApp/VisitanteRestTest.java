@@ -77,7 +77,6 @@ public class VisitanteRestTest {
 		
 	}
 	
-	
 	@Test
 	public void readEncomendas() throws Exception {
 		mockMvc.perform(get("/encomendas"))
