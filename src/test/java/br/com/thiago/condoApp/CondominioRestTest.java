@@ -21,6 +21,7 @@ import br.com.thiago.condoApp.modelo.Area;
 import br.com.thiago.condoApp.modelo.Bloco;
 import br.com.thiago.condoApp.modelo.Condominio;
 import br.com.thiago.condoApp.modelo.Edificio;
+import br.com.thiago.condoApp.modelo.Encomenda;
 import br.com.thiago.condoApp.modelo.Morador;
 import br.com.thiago.condoApp.modelo.Pessoa;
 import br.com.thiago.condoApp.modelo.Veiculo;
@@ -30,6 +31,7 @@ import br.com.thiago.condoApp.servico.AreaService;
 import br.com.thiago.condoApp.servico.BlocoService;
 import br.com.thiago.condoApp.servico.CondominioService;
 import br.com.thiago.condoApp.servico.EdificioService;
+import br.com.thiago.condoApp.servico.EncomendaService;
 import br.com.thiago.condoApp.servico.MoradorService;
 import br.com.thiago.condoApp.servico.PessoaService;
 import br.com.thiago.condoApp.servico.VeiculoService;
@@ -68,6 +70,10 @@ public class CondominioRestTest {
 	
 	@Autowired
 	private VeiculoService veiculoService;
+	
+
+	@Autowired
+	private EncomendaService encomendaService;
 	
 	@Autowired
 	private CondominioRepository condominioRepository;
@@ -113,7 +119,19 @@ public class CondominioRestTest {
 		
 		Veiculo veic = criaVeiculo("BMW", "Z3", "LLL-1921", "002928182122", "PRETO", mr1);
 		
+		Encomenda encomenda = criarEncomenda("CORREIOS", ap1);
 		
+	}
+	
+	
+	private Encomenda criarEncomenda(String tipo, Apartamento apartamento) {
+		Encomenda encomenda = new Encomenda();
+		encomenda.setApartamento(apartamento);
+		encomenda.setTipo("CORREIOS");
+		
+		encomendaService.save(encomenda);
+		
+		return encomenda;
 	}
 
 	private Veiculo criaVeiculo(String marca, String modelo, String placa, String Renavan, String cor, Morador morador) {
