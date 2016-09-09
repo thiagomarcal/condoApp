@@ -3,6 +3,8 @@ package br.com.thiago.condoApp;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -16,23 +18,18 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
-import br.com.thiago.condoApp.modelo.Apartamento;
-import br.com.thiago.condoApp.modelo.Area;
-import br.com.thiago.condoApp.modelo.Bloco;
 import br.com.thiago.condoApp.modelo.Condominio;
-import br.com.thiago.condoApp.modelo.Edificio;
-import br.com.thiago.condoApp.modelo.Morador;
-import br.com.thiago.condoApp.modelo.Pessoa;
-import br.com.thiago.condoApp.modelo.Veiculo;
 import br.com.thiago.condoApp.repository.CondominioRepository;
 import br.com.thiago.condoApp.servico.ApartamentoService;
 import br.com.thiago.condoApp.servico.AreaService;
 import br.com.thiago.condoApp.servico.BlocoService;
 import br.com.thiago.condoApp.servico.CondominioService;
 import br.com.thiago.condoApp.servico.EdificioService;
+import br.com.thiago.condoApp.servico.EncomendaService;
 import br.com.thiago.condoApp.servico.MoradorService;
 import br.com.thiago.condoApp.servico.PessoaService;
 import br.com.thiago.condoApp.servico.VeiculoService;
+import br.com.thiago.condoApp.servico.VisitanteService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = App.class)
@@ -69,6 +66,13 @@ public class CondominioRestTest {
 	@Autowired
 	private VeiculoService veiculoService;
 	
+
+	@Autowired
+	private EncomendaService encomendaService;
+	
+	@Autowired
+	private VisitanteService visitanteService;
+	
 	@Autowired
 	private CondominioRepository condominioRepository;
 
@@ -91,106 +95,11 @@ public class CondominioRestTest {
 	public void criaCondominioTest() throws Exception {
 		Condominio cond = criaCondominio();
 		
-		Area area1 = criaArea("Sauna", "Sauna", cond);
-		Area area2 = criaArea("Piscina", "Piscina", cond);
-		Area area3 = criaArea("Salão de Festa", "Salão de Festa", cond);
-		Area area4 = criaArea("Churrasqueira", "Churrasqueira", cond);
+		System.out.println("CONDOMINIO " + cond.getName() + " CRIADO COM SUCESSO!");
+	}
 	
-		Bloco bloco1 = criaBloco("Bloco 1", cond);
-		Bloco bloco2 = criaBloco("Bloco 2", cond);
 	
-		Edificio edf1 = criaEdificio("Ed1", "Ed1Desc", bloco1);
-		Edificio edf2 = criaEdificio("Ed2", "Ed2Desc", bloco1);
-		
-		Apartamento ap1 = criaApartamento("Ap 101", 101L, edf1);
-		Apartamento ap2 = criaApartamento("Ap 102", 102L, edf2);
-		
-		Pessoa p1 = criaPessoa("111111", "balbal@ashuu.com", "John Doe");
-		Pessoa p2 = criaPessoa("222222", "thiagormarcal@gmail.com", "Thiago Marcal");
-		
-		Morador mr1 = criaMorador(ap1, p1);
-		Morador mr2 = criaMorador(ap2, p2);
-		
-		Veiculo veic = criaVeiculo("BMW", "Z3", "LLL-1921", "002928182122", "PRETO", mr1);
-		
-		
-	}
 
-	private Veiculo criaVeiculo(String marca, String modelo, String placa, String Renavan, String cor, Morador morador) {
-		Veiculo veiculo = new Veiculo();
-		veiculo.setMarca(marca);
-		veiculo.setModelo(modelo);
-		veiculo.setPlaca(placa);
-		veiculo.setRenavan(Renavan);
-		veiculo.setCor(cor);
-		veiculo.setMorador(morador);
-		
-		this.veiculoService.save(veiculo);
-		return veiculo;
-	}
-
-	private Morador criaMorador(Apartamento apartamento, Pessoa pessoa) {
-		Morador mr1 = new Morador();
-		mr1.setApartamento(apartamento);
-		mr1.setPessoa(pessoa);
-		
-		this.moradorService.save(mr1);
-		return mr1;
-		
-	}
-
-	private Pessoa criaPessoa(String cpf, String email, String nome) {
-		Pessoa p1 = new Pessoa();		
-		p1.setCpf(cpf);
-		p1.setEmail(email);
-		p1.setNome(nome);
-		
-		this.pessoaService.save(p1);
-		return p1;
-		
-	}
-
-	private Apartamento criaApartamento(String nome, Long numero, Edificio edificio) {
-		Apartamento ap1 = new Apartamento();
-		ap1.setEdificio(edificio);
-		ap1.setNumero(numero);
-		ap1.setNome(nome);
-		
-		this.apartamentoService.save(ap1);
-		
-		return ap1;
-		
-	}
-
-	private Edificio criaEdificio(String nome, String descricao, Bloco bloco) {
-		Edificio ed1 = new Edificio();
-		ed1.setNome(nome);
-		ed1.setDescricao(descricao);
-		ed1.setBloco(bloco);
-		
-		this.edificioService.save(ed1);
-		return ed1;
-	}
-
-	private Bloco criaBloco(String nome, Condominio condominio) {
-		Bloco bloco1 = new Bloco();
-		bloco1.setNome("nome");
-		bloco1.setCondominio(condominio);
-		
-		this.blocoService.save(bloco1);
-		return bloco1;
-	}
-
-	private Area criaArea(String nome, String descricao, Condominio condominio) {
-		Area area1 = new Area();
-		area1.setNome(nome);
-		area1.setDescricao(descricao);
-		area1.setCondominio(condominio);
-		
-		this.areaService.save(area1);
-		
-		return area1;
-	}
 
 	private Condominio criaCondominio() {
 		Condominio condominio = new Condominio();
@@ -199,7 +108,24 @@ public class CondominioRestTest {
 		condominio.setNumero("25");
 		condominio.setUf("RJ");
 		
-		this.condominioService.save(condominio);
+		Condominio condominio2 = new Condominio();
+		condominio2.setName("Beija Flor");
+		condominio2.setLogradouro("Estrada João Paulo");
+		condominio2.setNumero("260");
+		condominio2.setUf("RJ");
+		
+		
+		List<Condominio> listaCondominio = new ArrayList();
+		
+		listaCondominio.add(condominio);
+		listaCondominio.add(condominio2);
+		
+		
+		for(Condominio cond : listaCondominio){
+		  this.condominioService.save(cond);
+		}
+		
+		
 		
 		return condominio;
 		
