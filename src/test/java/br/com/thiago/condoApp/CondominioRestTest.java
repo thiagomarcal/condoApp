@@ -1,7 +1,9 @@
 package br.com.thiago.condoApp;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -20,12 +22,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
+import br.com.thiago.condoApp.modelo.Area;
 import br.com.thiago.condoApp.modelo.AuthenticationRequest;
 import br.com.thiago.condoApp.modelo.AuthenticationResponse;
+import br.com.thiago.condoApp.modelo.Bloco;
 import br.com.thiago.condoApp.modelo.Condominio;
 import br.com.thiago.condoApp.security.TestApiConfig;
-import br.com.thiago.condoApp.security.TokenUtils;
 import br.com.thiago.condoApp.servico.CondominioService;
+import br.com.thiago.condoApp.util.ModeloUtil;
 import br.com.thiago.condoApp.util.RequestEntityBuilder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -38,9 +42,9 @@ public class CondominioRestTest {
 	private String authenticationToken;
 	
 	private String authenticationRoute = "auth";
-
+	
 	@Autowired
-	private TokenUtils tokenUtils;
+	private ModeloUtil modeloUtil;
 	
 	@Autowired
 	private CondominioService condominioService;
@@ -59,13 +63,7 @@ public class CondominioRestTest {
 	public void requisicaoPegarTodosOsCondominios() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
-		//Objeto que vai na requisicao post
-		Condominio cond1 = new Condominio();
-		cond1.setName("TesteJunitCondo");
-		cond1.setLogradouro("TesteJunit");
-		cond1.setNumero("25");
-		cond1.setCidade("Rio de Janeiro");
-		cond1.setUf("RJ");
+		Condominio cond1 = modeloUtil.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
 		
 		this.condominioService.save(cond1);
 
@@ -95,13 +93,7 @@ public class CondominioRestTest {
 	public void requisicaoPegarCondominioPorId() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
-		//Objeto que vai na requisicao post
-		Condominio cond1 = new Condominio();
-		cond1.setName("TesteJunitCondo");
-		cond1.setLogradouro("TesteJunit");
-		cond1.setNumero("25");
-		cond1.setCidade("Rio de Janeiro");
-		cond1.setUf("RJ");
+		Condominio cond1 = modeloUtil.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
 				
 		this.condominioService.save(cond1);
 
@@ -125,13 +117,7 @@ public class CondominioRestTest {
 	public void requisicaoPegarCondominioPorNome() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
-		//Objeto que vai na requisicao post
-		Condominio cond1 = new Condominio();
-		cond1.setName("TesteJunitCondo");
-		cond1.setLogradouro("TesteJunit");
-		cond1.setNumero("25");
-		cond1.setCidade("Rio de Janeiro");
-		cond1.setUf("RJ");
+		Condominio cond1 = modeloUtil.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
 		
 		this.condominioService.save(cond1);
 		
@@ -160,13 +146,7 @@ public class CondominioRestTest {
 	public void requisicaoSalvarNovoCondominio() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
-		//Objeto que vai na requisicao post
-		Condominio cond1 = new Condominio();
-		cond1.setName("TesteJunitCondo");
-		cond1.setLogradouro("TesteJunit");
-		cond1.setNumero("25");
-		cond1.setCidade("Rio de Janeiro");
-		cond1.setUf("RJ");
+		Condominio cond1 = modeloUtil.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
 		
 
 		ResponseEntity<Condominio> responseEntity = client.exchange(
@@ -188,13 +168,7 @@ public class CondominioRestTest {
 	public void requisicaoUpdateCondominio() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
-		// Objeto Origem
-		Condominio condOrigem = new Condominio();
-		condOrigem.setName("TesteJunitCondo");
-		condOrigem.setLogradouro("TesteJunit");
-		condOrigem.setNumero("25");
-		condOrigem.setCidade("Rio de Janeiro");
-		condOrigem.setUf("RJ");
+		Condominio condOrigem = modeloUtil.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
 		
 		this.condominioService.save(condOrigem);
 		
@@ -223,16 +197,9 @@ public class CondominioRestTest {
 	public void requisicaoDeleteCondominio() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
-		// Objeto Origem
-		Condominio condOrigem = new Condominio();
-		condOrigem.setName("TesteJunitCondo");
-		condOrigem.setLogradouro("TesteJunit");
-		condOrigem.setNumero("25");
-		condOrigem.setCidade("Rio de Janeiro");
-		condOrigem.setUf("RJ");
+		Condominio condOrigem = modeloUtil.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
 		
 		this.condominioService.save(condOrigem);
-		
 
 		ResponseEntity<Long> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("condominio/" + condOrigem.getId() ), HttpMethod.DELETE, buildAuthenticationSemBodyEToken(),
@@ -241,13 +208,65 @@ public class CondominioRestTest {
 		try {
 			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
 			assertTrue(condOrigem.getId().equals(responseEntity.getBody()));
-			this.condominioService.delete(condOrigem.getId());
 			
 		} catch (Exception e) {
 			fail("Should have returned an HTTP 400: Ok status code");
 		}
 	}
 	
+	
+	@Test
+	public void requisicaoAdicionaAreaNoCondominio() throws Exception {
+		this.inicializaAutorizacaoValidaComTokenAdmin();
+		
+		Condominio cond1 = modeloUtil.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
+		this.condominioService.save(cond1);
+	
+		Area area = new Area();
+		area.setNome("TesteJunit");
+		area.setDescricao("TesteJunit");
+				
+
+		ResponseEntity<Area> responseEntity = client.exchange(
+				TestApiConfig.getAbsolutePath("condominio/"+cond1.getId()+"/area"), HttpMethod.POST, buildAuthenticationComBodyEToken(area),
+				Area.class);
+
+		try {
+			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+			Area areaResp= responseEntity.getBody();
+			assertTrue(areaResp.getNome().equals(area.getNome()));
+			this.condominioService.delete(cond1.getId());
+			
+		} catch (Exception e) {
+			fail("Should have returned an HTTP 400: Ok status code");
+		}
+	}
+	
+	@Test
+	public void requisicaoAdicionaBlocoNoCondominio() throws Exception {
+		this.inicializaAutorizacaoValidaComTokenAdmin();
+		
+		Condominio cond1 = modeloUtil.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
+		this.condominioService.save(cond1);
+	
+		Bloco bloco = new Bloco();
+		bloco.setNome("TesteJunit");
+				
+
+		ResponseEntity<Bloco> responseEntity = client.exchange(
+				TestApiConfig.getAbsolutePath("condominio/"+cond1.getId()+"/bloco"), HttpMethod.POST, buildAuthenticationComBodyEToken(bloco),
+				Bloco.class);
+
+		try {
+			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+			Bloco blocoResp= responseEntity.getBody();
+			assertTrue(blocoResp.getNome().equals(bloco.getNome()));
+			this.condominioService.delete(cond1.getId());
+			
+		} catch (Exception e) {
+			fail("Should have returned an HTTP 400: Ok status code");
+		}
+	}
 	
 	
 	private void inicializaAutorizacaoValidaComTokenAdmin() {
@@ -260,6 +279,7 @@ public class CondominioRestTest {
 		authenticationToken = authenticationResponse.getBody().getToken();
 	}
 	
+	@SuppressWarnings("unused")
 	private void inicializaAutorizacaoValidaComTokenUser() {
 		authenticationRequest = TestApiConfig.USER_AUTHENTICATION_REQUEST;
 
