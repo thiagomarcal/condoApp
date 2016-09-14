@@ -71,7 +71,35 @@ public class ModeloUtil {
 		return encomenda;
 	}
 	
+	public Encomenda criarEncomenda(String tipo) {
+		
+		Apartamento apartamento = this.criaApartamento("Apartamento 210", (long)210);
+		
+		Encomenda encomenda = new Encomenda();
+		encomenda.setApartamento(apartamento);
+		encomenda.setTipo(tipo);
+		
+		this.encomendaService.save(encomenda);
+		
+		return encomenda;
+	}
+	
 	public Visitante criarVisitante(String nome, Apartamento apartamento) {
+		Visitante visitante = new Visitante();
+		visitante.setDataVisita(new Date());
+		visitante.setNome(nome);
+		visitante.setApartamento(apartamento);
+		
+		this.visitanteService.save(visitante);
+		
+		return visitante;
+	}
+	
+	
+	public Visitante criarVisitante(String nome) {
+		
+		Apartamento apartamento = this.criaApartamento("Apartamento 210", (long)210);
+		
 		Visitante visitante = new Visitante();
 		visitante.setDataVisita(new Date());
 		visitante.setNome(nome);
@@ -94,6 +122,22 @@ public class ModeloUtil {
 		this.veiculoService.save(veiculo);
 		return veiculo;
 	}
+	
+	public Veiculo criaVeiculo(String marca, String modelo, String placa, String Renavan, String cor) {
+		
+		Veiculo veiculo = new Veiculo();
+		veiculo.setMarca(marca);
+		veiculo.setModelo(modelo);
+		veiculo.setPlaca(placa);
+		veiculo.setRenavan(Renavan);
+		veiculo.setCor(cor);
+		
+		
+		this.veiculoService.save(veiculo);
+		return veiculo;
+	}
+	
+	
 
 	public Morador criaMorador(Apartamento apartamento, Pessoa pessoa) {
 		Morador mr1 = new Morador();
@@ -127,8 +171,34 @@ public class ModeloUtil {
 		return ap1;
 		
 	}
+	
+	public Apartamento criaApartamento(String nome, Long numero) {
+		Edificio edificio = this.criaEdificioComBloco("Edificio Junit", "Edificio de Teste JUnit");
+		
+		Apartamento ap1 = new Apartamento();
+		ap1.setEdificio(edificio);
+		ap1.setNumero(numero);
+		ap1.setNome(nome);
+		
+		this.apartamentoService.save(ap1);
+		
+		return ap1;
+		
+	}
 
 	public Edificio criaEdificio(String nome, String descricao, Bloco bloco) {
+		Edificio ed1 = new Edificio();
+		ed1.setNome(nome);
+		ed1.setDescricao(descricao);
+		ed1.setBloco(bloco);
+		
+		this.edificioService.save(ed1);
+		return ed1;
+	}
+	
+	public Edificio criaEdificioComBloco(String nome, String descricao) {
+		Bloco bloco = this.criaBlocoComCondominio("Bloco1");
+		
 		Edificio ed1 = new Edificio();
 		ed1.setNome(nome);
 		ed1.setDescricao(descricao);
@@ -143,6 +213,16 @@ public class ModeloUtil {
 		bloco1.setNome(nome);
 		bloco1.setCondominio(condominio);
 		
+		this.blocoService.save(bloco1);
+		return bloco1;
+	}
+	
+	
+	public Bloco criaBlocoComCondominio(String nome){
+		Condominio condominio = this.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
+		Bloco bloco1 = new Bloco();
+		bloco1.setNome(nome);
+		bloco1.setCondominio(condominio);
 		this.blocoService.save(bloco1);
 		return bloco1;
 	}

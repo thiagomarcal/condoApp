@@ -36,7 +36,7 @@ private static final long serialVersionUID = 1L;
 		this.id = id;
 	}
 
-	public String getTip() {
+	public String getTipo() {
 		return tipo;
 	}
 
