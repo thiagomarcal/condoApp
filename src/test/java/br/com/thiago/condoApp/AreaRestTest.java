@@ -25,7 +25,6 @@ import org.springframework.web.client.RestTemplate;
 import br.com.thiago.condoApp.modelo.Area;
 import br.com.thiago.condoApp.modelo.AuthenticationRequest;
 import br.com.thiago.condoApp.modelo.AuthenticationResponse;
-import br.com.thiago.condoApp.modelo.Condominio;
 import br.com.thiago.condoApp.security.TestApiConfig;
 import br.com.thiago.condoApp.servico.AreaService;
 import br.com.thiago.condoApp.util.ModeloUtil;
@@ -63,9 +62,7 @@ public class AreaRestTest {
 	public void requisicaoPegaTodasAsAreas() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
-		Condominio condominio = modeloUtil.criaCondominio("Condominio1", "Estrada Teste JUNIT", "260", "RJ");
-		
-		Area area1 = modeloUtil.criaArea("Piscina JUNIT", "Piscina Teste JUNIT", condominio);
+		Area area1 = modeloUtil.criaArea("Piscina JUNIT", "Piscina Teste JUNIT");
 
 		ResponseEntity<List<Area>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("/areas"), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -78,7 +75,7 @@ public class AreaRestTest {
 			
 			for (Area area : listaAreas) {
 				if (area.getId() == area1.getId()) {
-					assertTrue(condominio.getName().equals(area1.getNome()));
+					assertTrue(area.getNome().equals(area1.getNome()));
 				}
 			}
 			
@@ -90,6 +87,29 @@ public class AreaRestTest {
 	}
 	
 	
+	
+	@Test
+	public void requisicaoPegaAreaPorId() throws Exception {
+		this.inicializaAutorizacaoValidaComTokenAdmin();
+		
+		Area area1 = modeloUtil.criaArea("Piscina JUNIT", "Piscina Teste JUNIT");
+
+		ResponseEntity<Area> responseEntity = client.exchange(
+				TestApiConfig.getAbsolutePath("area/" + area1.getId()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
+				Area.class);
+
+		try {
+			
+			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+			Area area= responseEntity.getBody();
+			assertTrue(area.getNome().equals(area1.getNome()));
+			
+			this.areaService.delete(area1.getId());
+			
+		} catch (Exception e) {
+			fail("Should have returned an HTTP 400: Ok status code");
+		}
+	}
 	
 	
 	
@@ -120,8 +140,5 @@ public class AreaRestTest {
 		return RequestEntityBuilder.buildRequestEntityWithoutBody(authenticationToken);
 	}
 	
-	private HttpEntity<Object> buildAuthenticationComBodyEToken(Object body) {
-		return RequestEntityBuilder.buildRequestEntity(authenticationToken, body);
-	}
 
 }

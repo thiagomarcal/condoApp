@@ -21,6 +21,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
+
+import br.com.thiago.condoApp.modelo.Apartamento;
 import br.com.thiago.condoApp.modelo.AuthenticationRequest;
 import br.com.thiago.condoApp.modelo.AuthenticationResponse;
 import br.com.thiago.condoApp.modelo.Visitante;
@@ -219,6 +221,31 @@ public class VisitanteRestTest {
 		}
 	}
 	
+	
+	
+	@Test
+	public void requisicaoAdicionaVisitanteParaApartamento() throws Exception {
+		this.inicializaAutorizacaoValidaComTokenAdmin();
+
+		Visitante visitanteNovo = modeloUtil.criarVisitante("Marco MArques");
+
+		Apartamento apartamento = modeloUtil.criaApartamento("210", (long) 210);
+
+		ResponseEntity<Visitante> responseEntity = client.exchange(
+				TestApiConfig.getAbsolutePath("visitante/salvar/?apartamento=" + apartamento.getId()), HttpMethod.POST,
+				buildAuthenticationComBodyEToken(visitanteNovo), Visitante.class);
+
+		try {
+			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+			Visitante visitanteResp = responseEntity.getBody();
+			assertTrue(visitanteResp.getId().equals(visitanteNovo.getId()));
+
+			this.visitanteService.delete(visitanteNovo.getId());
+
+		} catch (Exception e) {
+			fail("Should have returned an HTTP 400: Ok status code");
+		}
+	}
 	
 	
 	

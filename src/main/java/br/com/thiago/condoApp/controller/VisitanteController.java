@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.thiago.condoApp.modelo.Visitante;
+import br.com.thiago.condoApp.servico.ApartamentoService;
 import br.com.thiago.condoApp.servico.VisitanteService;
 
 @RestController
@@ -20,6 +21,9 @@ public class VisitanteController {
 	
 	@Autowired
 	private VisitanteService visitanteService;
+	
+	@Autowired
+	private ApartamentoService apartamentoService;
 	
 	@RequestMapping(value = "/visitantes", method = RequestMethod.GET)
 	public ResponseEntity<List<Visitante>> listar() {
@@ -33,18 +37,26 @@ public class VisitanteController {
 	}
 	
 	@RequestMapping(value = "/visitante/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Visitante> pegar(@PathVariable("id") Long id) {
+	public ResponseEntity<Visitante> pegarPorId(@PathVariable("id") Long id) {
 		return new ResponseEntity<Visitante>(visitanteService.findOne(id), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/visitante/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Long> deletar(@PathVariable("id") Long id) {
+	public ResponseEntity<Long> delete(@PathVariable("id") Long id) {
 		visitanteService.delete(id);
 		return new ResponseEntity<Long>(id, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/visitante", method = RequestMethod.PUT)
 	public ResponseEntity<Visitante> update(@RequestBody Visitante visitante) {
+		visitanteService.save(visitante);
+		return new ResponseEntity<Visitante>(visitante, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/visitante/salvar", method = RequestMethod.POST)
+	public ResponseEntity<Visitante> criarVisitante(@RequestParam("apartamento") Long idApartamento, @RequestBody Visitante visitante) {
+		
+		visitante.setApartamento(apartamentoService.findOne(idApartamento));
 		visitanteService.save(visitante);
 		return new ResponseEntity<Visitante>(visitante, HttpStatus.OK);
 	}
