@@ -65,11 +65,8 @@ public class BlocoRestTest {
 		
 		
 		Bloco bloco1 = modeloUtil.criaBlocoComCondominio("Bloco 1");
-		Bloco bloco2 = modeloUtil.criaBlocoComCondominio("Bloco 2");
-		
 		this.blocoService.save(bloco1);
-		this.blocoService.save(bloco2);
-
+		
 		ResponseEntity<List<Bloco>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("blocos"), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
 				new ParameterizedTypeReference<List<Bloco>>(){});
@@ -80,13 +77,12 @@ public class BlocoRestTest {
 			List<Bloco> listaBloco= responseEntity.getBody();
 			
 			for (Bloco bloco : listaBloco) {
-				if (bloco.getId() == bloco1.getId() || bloco.getId() == bloco2.getId()) {
-					assertTrue(bloco.getNome().equals(bloco1.getNome()) || bloco.getNome().equals(bloco2.getNome()));
+				if (bloco.getId() == bloco1.getId()) {
+					assertTrue(bloco.getNome().equals(bloco1.getNome()));
 				}
 			}
 			
 			this.blocoService.delete(bloco1.getId());
-			this.blocoService.delete(bloco2.getId());
 			
 		} catch (Exception e) {
 			fail("Should have returned an HTTP 400: Ok status code");
@@ -149,27 +145,7 @@ public class BlocoRestTest {
 	}
 	
 	
-	@Test
-	public void requisicaoSalvarNovoBloco() throws Exception {
-		this.inicializaAutorizacaoValidaComTokenAdmin();
-		
-		Bloco bloco1 = modeloUtil.criaBlocoComCondominio("Bloco1 Teste JUnit");
-		
 
-		ResponseEntity<Bloco> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("bloco"), HttpMethod.POST, buildAuthenticationComBodyEToken(bloco1),
-				Bloco.class);
-
-		try {
-			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-			Bloco blocoResp= responseEntity.getBody();
-			assertTrue(blocoResp.getNome().equals(bloco1.getNome()));
-			this.blocoService.delete(blocoResp.getId());
-			
-		} catch (Exception e) {
-			fail("Should have returned an HTTP 400: Ok status code");
-		}
-	}
 	
 	
 	@Test
