@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.thiago.condoApp.modelo.AuthenticationResponse;
 import br.com.thiago.condoApp.modelo.User;
+import br.com.thiago.condoApp.modelo.factory.UserVO;
 import br.com.thiago.condoApp.repository.UserRepository;
 import br.com.thiago.condoApp.security.TokenUtils;
 
@@ -23,13 +23,14 @@ public class UserController {
 	private UserRepository userRepository;
 	
 	@RequestMapping(value = "/user/roles", method = RequestMethod.GET)
-	public ResponseEntity<?> listar(@RequestHeader("X-Auth-Token") String authToken) {
+	public ResponseEntity<UserVO> listar(@RequestHeader("X-Auth-Token") String authToken) {
 		
 		String username = this.tokenUtils.getUsernameFromToken(authToken);
 		User user = this.userRepository.findByUsername(username);
 		
-		return ResponseEntity.ok(user.getAuthorities());
-		//return new ResponseEntity<String>(user.getAuthorities(), HttpStatus.OK);
+		UserVO userVO = new UserVO(user);
+
+		return new ResponseEntity<UserVO>(userVO, HttpStatus.OK);
 	}	
 
 }
