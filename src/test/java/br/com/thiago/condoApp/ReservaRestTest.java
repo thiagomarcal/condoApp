@@ -63,25 +63,25 @@ public class ReservaRestTest {
 	
 	
 	@Test
-	public void requisicaoPegarTodosOsCondominios() throws Exception {
+	public void requisicaoPegarBuscaTodasAsReservas() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Reserva reserva1 = modeloUtil.criaReserva();
 ;		
 		this.reservaService.save(reserva1);
 
+		
 		ResponseEntity<List<Reserva>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("reservas"), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
 				new ParameterizedTypeReference<List<Reserva>>(){});
 
 		try {
-			
 			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-			List<Reserva> listaReserva= responseEntity.getBody();
+			List<Reserva> listaReservas= responseEntity.getBody();
 			
-			for (Reserva reserva : listaReserva) {
-				if (reserva.getId() == reserva.getId()) {
-					assertTrue(reserva.getArea().equals(reserva1.getArea()));
+			for (Reserva reserva : listaReservas) {
+				if (reserva.getId() == reserva1.getId()) {
+					assertTrue(reserva.getSituacao().equals(reserva1.getSituacao()));
 				}
 			}
 			
@@ -131,7 +131,7 @@ public class ReservaRestTest {
 
 		
 		ResponseEntity<List<Reserva>> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("condominio?situacao=" + reserva1.getSituacao()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
+				TestApiConfig.getAbsolutePath("reserva?situacao=" + reserva1.getSituacao()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
 				new ParameterizedTypeReference<List<Reserva>>(){});
 
 		try {
@@ -204,12 +204,26 @@ public class ReservaRestTest {
 		Reserva reserva = modeloUtil.criaReserva();
 
 		this.reservaService.save(reserva);
-	
-		Area area = modeloUtil.criaArea("Piscina", "Piscina Grande");
+
+		
+		ResponseEntity<List<Area>> responseEntityArea = client.exchange(
+				TestApiConfig.getAbsolutePath("area"), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
+				new ParameterizedTypeReference<List<Area>>(){});
+		
+		Area areaResp = null;
+		
+		try {
+			assertThat(responseEntityArea.getStatusCode(), is(HttpStatus.OK));
+			areaResp = (Area) responseEntityArea.getBody();
+			
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 		Morador morador = modeloUtil.criaMorador();
 
 		ResponseEntity<Reserva> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("reserva/salvar/?area=" +area.getId() +"morador=" + morador.getId()), HttpMethod.POST, buildAuthenticationComBodyEToken(reserva),
+				TestApiConfig.getAbsolutePath("reserva/salvar/?area=" + areaResp.getId() +"morador=" + morador.getId()), HttpMethod.POST, buildAuthenticationComBodyEToken(reserva),
 				Reserva.class);
 
 		try {

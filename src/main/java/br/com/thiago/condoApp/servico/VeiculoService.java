@@ -10,6 +10,6 @@ public interface VeiculoService {
 	public void save(Veiculo veiculo);
 	public Veiculo findOne(Long id);
 	public void delete(Long id);
-	public List<Veiculo> findByMarca(String marca);
+	public List<Veiculo> findByPlaca(String placa);
 
 }

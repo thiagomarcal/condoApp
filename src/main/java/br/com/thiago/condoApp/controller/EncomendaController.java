@@ -5,13 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import br.com.thiago.condoApp.modelo.Encomenda;
+import br.com.thiago.condoApp.modelo.Encomenda.Tipo;
 import br.com.thiago.condoApp.servico.ApartamentoService;
 import br.com.thiago.condoApp.servico.EncomendaService;
 
@@ -26,13 +29,14 @@ public class EncomendaController {
 	private ApartamentoService apartamentoService;
 	
 	@RequestMapping(value = "/encomendas", method = RequestMethod.GET)
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<List<Encomenda>> listar() {
 		return new ResponseEntity<List<Encomenda>>(encomendaService.findAll(), HttpStatus.OK);
 	}
 	
 	
 	@RequestMapping(value = "/encomenda", method = RequestMethod.GET)
-	public ResponseEntity<List<Encomenda>> listarPorNome(@RequestParam("nome") String tipo) {
+	public ResponseEntity<List<Encomenda>> listarPorTipo(@RequestParam("tipo") Tipo tipo) {
 		return new ResponseEntity<List<Encomenda>>(encomendaService.findByTipo(tipo), HttpStatus.OK);
 	}
 	

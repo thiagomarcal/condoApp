@@ -22,9 +22,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
+import br.com.thiago.condoApp.modelo.Apartamento;
 import br.com.thiago.condoApp.modelo.AuthenticationRequest;
 import br.com.thiago.condoApp.modelo.AuthenticationResponse;
 import br.com.thiago.condoApp.modelo.Encomenda;
+import br.com.thiago.condoApp.modelo.Encomenda.Tipo;
 import br.com.thiago.condoApp.security.TestApiConfig;
 import br.com.thiago.condoApp.servico.EncomendaService;
 import br.com.thiago.condoApp.util.ModeloUtil;
@@ -61,11 +63,11 @@ public class EncomendaRestTest {
 	
 	
 	@Test
-	public void requisicaoPegarTodosAsEncomendas() throws Exception {
+	public void requisicaoPegarTodasAsEncomendas() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Encomenda encomenda1 = modeloUtil.criarEncomenda("CORREIOS");
-				
+		
 		this.encomendaService.save(encomenda1);
 
 		ResponseEntity<List<Encomenda>> responseEntity = client.exchange(
@@ -75,11 +77,11 @@ public class EncomendaRestTest {
 		try {
 			
 			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-			List<Encomenda> listaEncomenda = responseEntity.getBody();
+			List<Encomenda> listaEncomendas = responseEntity.getBody();
 			
-			for (Encomenda encomenda : listaEncomenda) {
+			for (Encomenda encomenda : listaEncomendas) {
 				if (encomenda.getId() == encomenda1.getId()) {
-					assertTrue(encomenda.getTipo().equals(encomenda1.getTipo()));
+					assertTrue(encomenda.getNome().equals(encomenda1.getNome()));
 				}
 			}
 			
@@ -131,7 +133,7 @@ public class EncomendaRestTest {
 
 		try {
 			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-			List<Encomenda> listaEncomenda = responseEntity.getBody();
+			List<Encomenda> listaEncomenda= responseEntity.getBody();
 			
 			for (Encomenda encomenda : listaEncomenda) {
 				if (encomenda.getId() == encomenda1.getId()) {
@@ -148,22 +150,24 @@ public class EncomendaRestTest {
 	
 	
 	@Test
-	public void requisicaoSalvarNovoEncomenda() throws Exception {
+	public void requisicaoAdicionaEnomendaParaApartamento() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
-		
-		Encomenda encomenda1 = modeloUtil.criarEncomenda("CORREIOS");
-		
+
+		Encomenda encomendaNova = modeloUtil.criarEncomenda("CORREIOS");
+
+		Apartamento apartamento = modeloUtil.criaApartamento("210", (long) 210);
 
 		ResponseEntity<Encomenda> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("encomenda"), HttpMethod.POST, buildAuthenticationComBodyEToken(encomenda1),
-				Encomenda.class);
+				TestApiConfig.getAbsolutePath("/encomenda/salvar?apartamento=" + apartamento.getId()), HttpMethod.POST,
+				buildAuthenticationComBodyEToken(encomendaNova), Encomenda.class);
 
 		try {
 			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
 			Encomenda encomendaResp = responseEntity.getBody();
-			assertTrue(encomendaResp.getTipo().equals(encomenda1.getTipo()));
-			this.encomendaService.delete(encomendaResp.getId());
-			
+			assertTrue(encomendaResp.getId().equals(encomendaNova.getId()));
+
+			this.encomendaService.delete(encomendaNova.getId());
+
 		} catch (Exception e) {
 			fail("Should have returned an HTTP 400: Ok status code");
 		}
@@ -181,7 +185,7 @@ public class EncomendaRestTest {
 		
 		Encomenda encomendaAlterada = new Encomenda();
 		encomendaAlterada.setId(encomendaOrigem.getId());
-		encomendaAlterada.setTipo("ENCOMENDA ALTERADA");
+		encomendaAlterada.setTipo(Tipo.CORREIOS);
 		
 
 		ResponseEntity<Encomenda> responseEntity = client.exchange(

@@ -38,8 +38,8 @@ public class VeiculoServiceImpl implements VeiculoService{
 	}
 
 	@Override
-	public List<Veiculo> findByMarca(String marca) {
-		return (List<Veiculo>) veiculoRepository.findByMarca(marca);
+	public List<Veiculo> findByPlaca(String placa) {
+		return (List<Veiculo>) veiculoRepository.findByPlaca(placa);
 	}
 
 }

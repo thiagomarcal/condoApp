@@ -8,6 +8,6 @@ import br.com.thiago.condoApp.modelo.Veiculo;
 
 public interface VeiculoRepository extends CrudRepository<Veiculo, Long>{
 	
-	public List<Veiculo> findByMarca(String marca);
+	public List<Veiculo> findByPlaca(String placa);
 
 }

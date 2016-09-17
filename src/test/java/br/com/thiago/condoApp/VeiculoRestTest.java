@@ -148,42 +148,22 @@ public class VeiculoRestTest {
 	}
 	
 	
-	@Test
-	public void requisicaoSalvarNovoVeiculo() throws Exception {
-		this.inicializaAutorizacaoValidaComTokenAdmin();
-		
-		Veiculo veiculo1 = modeloUtil.criaVeiculo("JUNIT", "JUNIT", "JUNIT", "0029123", "JUNIT");
-		
-
-		ResponseEntity<Veiculo> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("veiculo"), HttpMethod.POST, buildAuthenticationComBodyEToken(veiculo1),
-				Veiculo.class);
-
-		try {
-			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-			Veiculo veiculoResp= responseEntity.getBody();
-			assertTrue(veiculoResp.getPlaca().equals(veiculo1.getPlaca()));
-			this.veiculoService.delete(veiculoResp.getId());
-			
-		} catch (Exception e) {
-			fail("Should have returned an HTTP 400: Ok status code");
-		}
-	}
-	
 	
 	
 	@Test
 	public void requisicaoUpdateVeiculo() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
+
 		Veiculo veiculoOrigem = modeloUtil.criaVeiculo("JUNIT", "JUNIT", "JUNIT", "0029123", "JUNIT");
 		
 		this.veiculoService.save(veiculoOrigem);
 		
 		Veiculo veiculoAlterado = new Veiculo();
-		veiculoAlterado.setMarca("BBD");
-		veiculoAlterado.setCor("AZUL");
-		
+		veiculoAlterado.setId(veiculoOrigem.getId());
+		veiculoAlterado.setAno("2010");
+		veiculoAlterado.setMarca("JUNIT BMW");
+		veiculoAlterado.setPlaca("LLL-2002");
 
 		ResponseEntity<Veiculo> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("veiculo"), HttpMethod.PUT, buildAuthenticationComBodyEToken(veiculoAlterado),
@@ -231,15 +211,18 @@ public class VeiculoRestTest {
 		Veiculo veiculoOrigem = modeloUtil.criaVeiculo("JUNIT", "JUNIT", "JUNIT", "0029123", "JUNIT");
 		
 		Morador morador = modeloUtil.criaMorador();
+		
+		
 
 		ResponseEntity<Veiculo> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("/veiculo/salvar/?morador=" + morador.getId() ), HttpMethod.PUT, buildAuthenticationComBodyEToken(veiculoOrigem),
-				Veiculo.class);
+				TestApiConfig.getAbsolutePath("/veiculo/salvar/?morador=" + morador.getId()), HttpMethod.POST,
+				buildAuthenticationComBodyEToken(veiculoOrigem), Veiculo.class);
 
 		try {
 			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-			Veiculo veiculoResp= responseEntity.getBody();
-			assertTrue(veiculoResp.getPlaca().equals(veiculoOrigem.getPlaca()));
+			Veiculo veiculoResp = responseEntity.getBody();
+			assertTrue(veiculoResp.getId().equals(veiculoOrigem.getId()));
+			
 			this.veiculoService.delete(veiculoResp.getId());
 			
 		} catch (Exception e) {

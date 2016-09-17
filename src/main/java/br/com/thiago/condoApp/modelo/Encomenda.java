@@ -15,13 +15,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Encomenda implements Serializable{
 
 private static final long serialVersionUID = 1L;
+
+	public enum Tipo {
+		CORREIOS, EMPRESA, FOOD
+	}
 	
 	@Id
 	@GeneratedValue
 	private Long id;
 	
 	@Column
-	private String tipo;
+	private Tipo tipo;
+	
+	@Column
+	private String nome;
 	
 	@OneToOne
 	@JoinColumn(name = "apartamento_id")
@@ -36,12 +43,21 @@ private static final long serialVersionUID = 1L;
 		this.id = id;
 	}
 
-	public String getTipo() {
+	public Tipo getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
+	}
+	
+	
+	public String getNome(){
+		return nome;
+	}
+	
+	public void setNome(String nome){
+		this.nome = nome;
 	}
 
 	public Apartamento getApartamento() {
@@ -51,6 +67,8 @@ private static final long serialVersionUID = 1L;
 	public void setApartamento(Apartamento apartamento) {
 		this.apartamento = apartamento;
 	}
+	
+	
 	
 	
 	

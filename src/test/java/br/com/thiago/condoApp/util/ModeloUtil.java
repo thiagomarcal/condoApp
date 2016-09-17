@@ -11,6 +11,7 @@ import br.com.thiago.condoApp.modelo.Bloco;
 import br.com.thiago.condoApp.modelo.Condominio;
 import br.com.thiago.condoApp.modelo.Edificio;
 import br.com.thiago.condoApp.modelo.Encomenda;
+import br.com.thiago.condoApp.modelo.Encomenda.Tipo;
 import br.com.thiago.condoApp.modelo.Morador;
 import br.com.thiago.condoApp.modelo.Pessoa;
 import br.com.thiago.condoApp.modelo.Reserva;
@@ -85,7 +86,7 @@ public class ModeloUtil {
 	public Encomenda criarEncomenda(String tipo, Apartamento apartamento) {
 		Encomenda encomenda = new Encomenda();
 		encomenda.setApartamento(apartamento);
-		encomenda.setTipo(tipo);
+		encomenda.setTipo(Tipo.CORREIOS);
 
 		this.encomendaService.save(encomenda);
 
@@ -98,7 +99,8 @@ public class ModeloUtil {
 
 		Encomenda encomenda = new Encomenda();
 		encomenda.setApartamento(apartamento);
-		encomenda.setTipo(tipo);
+		encomenda.setNome("CORREIOS");
+		encomenda.setTipo(Tipo.EMPRESA);
 
 		this.encomendaService.save(encomenda);
 

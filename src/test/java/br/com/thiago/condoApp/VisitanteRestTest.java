@@ -126,12 +126,12 @@ public class VisitanteRestTest {
 		this.visitanteService.save(visitante1);
 		
 		ResponseEntity<List<Visitante>> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("visitante?name=" + visitante1.getNome()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
+				TestApiConfig.getAbsolutePath("visitante?nome=" + visitante1.getNome()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
 				new ParameterizedTypeReference<List<Visitante>>(){});
 
 		try {
 			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-			List<Visitante> listaVisitante = responseEntity.getBody();
+			List<Visitante> listaVisitante= responseEntity.getBody();
 			
 			for (Visitante visitante : listaVisitante) {
 				if (visitante.getId() == visitante1.getId()) {
@@ -145,30 +145,6 @@ public class VisitanteRestTest {
 			fail("Should have returned an HTTP 400: Ok status code");
 		}
 	}
-	
-	
-	@Test
-	public void requisicaoSalvarNovoVisitante() throws Exception {
-		this.inicializaAutorizacaoValidaComTokenAdmin();
-		
-		Visitante visitante1 = modeloUtil.criarVisitante("Marco MArques");
-		
-
-		ResponseEntity<Visitante> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("visitante"), HttpMethod.POST, buildAuthenticationComBodyEToken(visitante1),
-				Visitante.class);
-
-		try {
-			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-			Visitante visitanteResp = responseEntity.getBody();
-			assertTrue(visitanteResp.getNome().equals(visitante1.getNome()));
-			this.visitanteService.delete(visitanteResp.getId());
-			
-		} catch (Exception e) {
-			fail("Should have returned an HTTP 400: Ok status code");
-		}
-	}
-	
 	
 	
 	@Test
