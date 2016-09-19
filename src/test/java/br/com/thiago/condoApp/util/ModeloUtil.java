@@ -1,6 +1,8 @@
 package br.com.thiago.condoApp.util;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,10 @@ import br.com.thiago.condoApp.modelo.Condominio;
 import br.com.thiago.condoApp.modelo.Edificio;
 import br.com.thiago.condoApp.modelo.Encomenda;
 import br.com.thiago.condoApp.modelo.Encomenda.Tipo;
+import br.com.thiago.condoApp.modelo.Mensagem;
 import br.com.thiago.condoApp.modelo.Morador;
+import br.com.thiago.condoApp.modelo.MuralBloco;
+import br.com.thiago.condoApp.modelo.MuralCondominio;
 import br.com.thiago.condoApp.modelo.Pessoa;
 import br.com.thiago.condoApp.modelo.Reserva;
 import br.com.thiago.condoApp.modelo.Reserva.Situacao;
@@ -25,6 +30,8 @@ import br.com.thiago.condoApp.servico.CondominioService;
 import br.com.thiago.condoApp.servico.EdificioService;
 import br.com.thiago.condoApp.servico.EncomendaService;
 import br.com.thiago.condoApp.servico.MoradorService;
+import br.com.thiago.condoApp.servico.MuralBlocoService;
+import br.com.thiago.condoApp.servico.MuralCondominioService;
 import br.com.thiago.condoApp.servico.PessoaService;
 import br.com.thiago.condoApp.servico.ReservaService;
 import br.com.thiago.condoApp.servico.VeiculoService;
@@ -65,6 +72,13 @@ public class ModeloUtil {
 
 	@Autowired
 	private ReservaService reservaService;
+	
+	@Autowired
+	private MuralCondominioService muralCondominioService;
+	
+	@Autowired
+	private MuralBlocoService muralBlocoService;
+	
 
 	public Reserva criaReserva() {
 		Morador morador = this.criaMorador();
@@ -92,7 +106,8 @@ public class ModeloUtil {
 
 		return encomenda;
 	}
-
+	
+	
 	public Encomenda criarEncomenda(String tipo) {
 
 		Apartamento apartamento = this.criaApartamento("Apartamento 210", (long) 210);
@@ -295,5 +310,53 @@ public class ModeloUtil {
 
 		return condominio;
 
+	}
+	
+	
+	public MuralCondominio criaMuralCondominio(){
+		
+		Condominio condominio = this.criaCondominio("Condo. JUNIT", "Estrada Junit", "260", "RJ");
+		
+		Mensagem mensagem = this.criaMensagem("TESTE JUNIT", new Date());
+		
+		Set<Mensagem> mensagemLista = new HashSet<Mensagem>();
+		mensagemLista.add(mensagem);
+		
+		MuralCondominio muralCondo = new MuralCondominio();
+		muralCondo.setCondominio(condominio);
+		muralCondo.setMensagens(mensagemLista);
+		
+		this.muralCondominioService.save(muralCondo);
+		
+		return muralCondo;
+	}
+	
+	
+	public MuralBloco criaMuralBloco(){
+		
+		Bloco bloco = this.criaBlocoComCondominio("BLOCO1");
+		
+		Mensagem mensagem = this.criaMensagem("TESTE JUNIT BLOCO", new Date());
+		
+		Set<Mensagem> mensagemLista = new HashSet<Mensagem>();
+		mensagemLista.add(mensagem);
+		
+		MuralBloco muralBloco = new MuralBloco();
+		muralBloco.setBloco(bloco);
+		muralBloco.setMensagens(mensagemLista);
+		
+		this.muralBlocoService.save(muralBloco);
+		
+		return muralBloco;
+	}
+	
+	public Mensagem criaMensagem(String mensagem, Date dataEnvio){
+		
+		Mensagem novaMensagem = new Mensagem();
+		novaMensagem.setDataEnvio(new Date());
+		novaMensagem.setMensagem(mensagem);
+		
+		return novaMensagem;
+		
 	}
 }
