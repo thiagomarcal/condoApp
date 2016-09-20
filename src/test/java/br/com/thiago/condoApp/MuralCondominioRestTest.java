@@ -153,7 +153,7 @@ public class MuralCondominioRestTest {
 		muralAlterado.setMensagens(muralCondo.getMensagens());
 	
 		ResponseEntity<MuralCondominio> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("muralCondominio"), HttpMethod.PUT, buildAuthenticationComBodyEToken(condominioNovo),
+				TestApiConfig.getAbsolutePath("muralCondominio"), HttpMethod.PUT, buildAuthenticationComBodyEToken(muralAlterado),
 				MuralCondominio.class);
 
 		try {

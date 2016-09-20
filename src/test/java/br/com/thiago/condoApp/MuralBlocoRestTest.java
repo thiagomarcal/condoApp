@@ -24,7 +24,9 @@ import org.springframework.web.client.RestTemplate;
 
 import br.com.thiago.condoApp.modelo.AuthenticationRequest;
 import br.com.thiago.condoApp.modelo.AuthenticationResponse;
+import br.com.thiago.condoApp.modelo.Bloco;
 import br.com.thiago.condoApp.modelo.MuralBloco;
+import br.com.thiago.condoApp.modelo.MuralCondominio;
 import br.com.thiago.condoApp.security.TestApiConfig;
 import br.com.thiago.condoApp.servico.MuralBlocoService;
 import br.com.thiago.condoApp.util.ModeloUtil;
@@ -89,6 +91,86 @@ public class MuralBlocoRestTest {
 	}
 	
 	
+	
+	@Test
+	public void requisicaoPegarMuralBlocoPorId() throws Exception {
+		this.inicializaAutorizacaoValidaComTokenAdmin();
+		
+		MuralBloco muralBloco = modeloUtil.criaMuralBloco();
+				
+		this.muralBlocoService.save(muralBloco);
+
+		ResponseEntity<MuralBloco> responseEntity = client.exchange(
+				TestApiConfig.getAbsolutePath("muralBloco/" + muralBloco.getId()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
+				MuralBloco.class);
+
+		try {
+
+			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+			MuralBloco muralBlocoResp = responseEntity.getBody();
+			assertTrue(muralBlocoResp.getId().equals(muralBloco.getId()));
+			
+			this.muralBlocoService.delete(muralBloco.getId());
+			
+		} catch (Exception e) {
+			fail("Should have returned an HTTP 400: Ok status code");
+		}
+	}
+	
+	
+	
+	@Test
+	public void requisicaoDeleteMuralBloco() throws Exception {
+		this.inicializaAutorizacaoValidaComTokenAdmin();
+		
+		MuralBloco muralBloco = modeloUtil.criaMuralBloco();
+		
+		this.muralBlocoService.save(muralBloco);
+		
+		ResponseEntity<Long> responseEntity = client.exchange(
+				TestApiConfig.getAbsolutePath("muralBloco/" + muralBloco.getId() ), HttpMethod.DELETE, buildAuthenticationSemBodyEToken(),
+				Long.class);
+
+		try {
+			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+			assertTrue(muralBloco.getId().equals(responseEntity.getBody()));
+			
+		} catch (Exception e) {
+			fail("Should have returned an HTTP 400: Ok status code");
+		}
+	}
+	
+	
+	@Test
+	public void requisicaoUpdateMuralBloco() throws Exception {
+		this.inicializaAutorizacaoValidaComTokenAdmin();
+		
+		MuralBloco muralBloco = modeloUtil.criaMuralBloco();
+		
+		this.muralBlocoService.save(muralBloco);
+		
+		Bloco blocoNovo = modeloUtil.criaBlocoComCondominio("Bloco1");
+		
+		MuralBloco muralBlocoAlterado = new MuralBloco();
+		muralBlocoAlterado.setBloco(blocoNovo);
+		muralBlocoAlterado.setId(muralBloco.getId());
+		muralBlocoAlterado.setMensagens(muralBloco.getMensagens());
+	
+		ResponseEntity<MuralBloco> responseEntity = client.exchange(
+				TestApiConfig.getAbsolutePath("muralBloco"), HttpMethod.PUT, buildAuthenticationComBodyEToken(muralBlocoAlterado),
+				MuralBloco.class);
+
+		try {
+			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+			MuralBloco muralBlocoResp = responseEntity.getBody();
+			assertTrue(muralBlocoResp.getBloco().equals(muralBlocoAlterado.getBloco()));
+			
+			this.muralBlocoService.delete(muralBlocoResp.getId());
+			
+		} catch (Exception e) {
+			fail("Should have returned an HTTP 400: Ok status code");
+		}
+	}
 	
 
 	private void inicializaAutorizacaoValidaComTokenAdmin() {
