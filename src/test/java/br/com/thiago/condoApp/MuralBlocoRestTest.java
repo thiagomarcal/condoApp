@@ -5,7 +5,10 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,9 +27,8 @@ import org.springframework.web.client.RestTemplate;
 
 import br.com.thiago.condoApp.modelo.AuthenticationRequest;
 import br.com.thiago.condoApp.modelo.AuthenticationResponse;
-import br.com.thiago.condoApp.modelo.Bloco;
+import br.com.thiago.condoApp.modelo.Mensagem;
 import br.com.thiago.condoApp.modelo.MuralBloco;
-import br.com.thiago.condoApp.modelo.MuralCondominio;
 import br.com.thiago.condoApp.security.TestApiConfig;
 import br.com.thiago.condoApp.servico.MuralBlocoService;
 import br.com.thiago.condoApp.util.ModeloUtil;
@@ -65,8 +67,6 @@ public class MuralBlocoRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		MuralBloco muralBloco = modeloUtil.criaMuralBloco();
-		
-		this.muralBlocoService.save(muralBloco);
 
 		ResponseEntity<List<MuralBloco>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("muralBlocos"), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -97,8 +97,6 @@ public class MuralBlocoRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		MuralBloco muralBloco = modeloUtil.criaMuralBloco();
-				
-		this.muralBlocoService.save(muralBloco);
 
 		ResponseEntity<MuralBloco> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("muralBloco/" + muralBloco.getId()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -125,8 +123,6 @@ public class MuralBlocoRestTest {
 		
 		MuralBloco muralBloco = modeloUtil.criaMuralBloco();
 		
-		this.muralBlocoService.save(muralBloco);
-		
 		ResponseEntity<Long> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("muralBloco/" + muralBloco.getId() ), HttpMethod.DELETE, buildAuthenticationSemBodyEToken(),
 				Long.class);
@@ -147,23 +143,27 @@ public class MuralBlocoRestTest {
 		
 		MuralBloco muralBloco = modeloUtil.criaMuralBloco();
 		
-		this.muralBlocoService.save(muralBloco);
+		Mensagem ms2 = modeloUtil.criaMensagem("TesteJunitUpdate", new Date());
 		
-		Bloco blocoNovo = modeloUtil.criaBlocoComCondominio("Bloco1");
-		
-		MuralBloco muralBlocoAlterado = new MuralBloco();
-		muralBlocoAlterado.setBloco(blocoNovo);
-		muralBlocoAlterado.setId(muralBloco.getId());
-		muralBlocoAlterado.setMensagens(muralBloco.getMensagens());
+		muralBloco.getMensagens().add(ms2);
 	
 		ResponseEntity<MuralBloco> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("muralBloco"), HttpMethod.PUT, buildAuthenticationComBodyEToken(muralBlocoAlterado),
+				TestApiConfig.getAbsolutePath("muralBloco"), HttpMethod.PUT, buildAuthenticationComBodyEToken(muralBloco),
 				MuralBloco.class);
 
 		try {
 			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
 			MuralBloco muralBlocoResp = responseEntity.getBody();
-			assertTrue(muralBlocoResp.getBloco().equals(muralBlocoAlterado.getBloco()));
+			
+			assertTrue(muralBlocoResp.getMensagens().size() == 2);
+			
+			Set<String> mensagensSet = new HashSet<>();
+			for (Mensagem mensagem : muralBlocoResp.getMensagens()) {
+				mensagensSet.add(mensagem.getMensagem());
+			}
+			
+			assertTrue(mensagensSet.contains("TESTE JUNIT BLOCO"));
+			assertTrue(mensagensSet.contains("TesteJunitUpdate"));
 			
 			this.muralBlocoService.delete(muralBlocoResp.getId());
 			

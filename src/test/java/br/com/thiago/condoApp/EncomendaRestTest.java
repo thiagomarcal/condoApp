@@ -67,8 +67,6 @@ public class EncomendaRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Encomenda encomenda1 = modeloUtil.criarEncomenda("CORREIOS");
-		
-		this.encomendaService.save(encomenda1);
 
 		ResponseEntity<List<Encomenda>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("encomendas"), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -99,8 +97,6 @@ public class EncomendaRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Encomenda encomenda1 = modeloUtil.criarEncomenda("CORREIOS");
-				
-		this.encomendaService.save(encomenda1);
 
 		ResponseEntity<Encomenda> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("encomenda/" + encomenda1.getId()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -124,8 +120,6 @@ public class EncomendaRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Encomenda encomenda1 = modeloUtil.criarEncomenda("CORREIOS");
-		
-		this.encomendaService.save(encomenda1);
 		
 		ResponseEntity<List<Encomenda>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("encomenda?tipo=" + encomenda1.getTipo()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -180,8 +174,6 @@ public class EncomendaRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Encomenda encomendaOrigem = modeloUtil.criarEncomenda("CORREIOS");
-		
-		this.encomendaService.save(encomendaOrigem);
 		
 		Encomenda encomendaAlterada = new Encomenda();
 		encomendaAlterada.setId(encomendaOrigem.getId());

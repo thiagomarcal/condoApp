@@ -66,8 +66,6 @@ public class VeiculoRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Veiculo veiculo1 = modeloUtil.criaVeiculo("JUNIT", "JUNIT", "JUNIT", "0029123", "JUNIT");
-				
-		this.veiculoService.save(veiculo1);
 
 		ResponseEntity<List<Veiculo>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("veiculos"), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -98,8 +96,6 @@ public class VeiculoRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Veiculo veiculo1 = modeloUtil.criaVeiculo("JUNIT", "JUNIT", "JUNIT", "0029123", "JUNIT");
-				
-		this.veiculoService.save(veiculo1);
 
 		ResponseEntity<Veiculo> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("veiculo/" + veiculo1.getId()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -123,8 +119,6 @@ public class VeiculoRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Veiculo veiculo1 = modeloUtil.criaVeiculo("JUNIT", "JUNIT", "JUNIT", "0029123", "JUNIT");
-		
-		this.veiculoService.save(veiculo1);
 		
 		ResponseEntity<List<Veiculo>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("veiculo?placa=" + veiculo1.getPlaca()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -154,10 +148,7 @@ public class VeiculoRestTest {
 	public void requisicaoUpdateVeiculo() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
-
 		Veiculo veiculoOrigem = modeloUtil.criaVeiculo("JUNIT", "JUNIT", "JUNIT", "0029123", "JUNIT");
-		
-		this.veiculoService.save(veiculoOrigem);
 		
 		Veiculo veiculoAlterado = new Veiculo();
 		veiculoAlterado.setId(veiculoOrigem.getId());
@@ -187,8 +178,6 @@ public class VeiculoRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Veiculo veiculoOrigem = modeloUtil.criaVeiculo("JUNIT", "JUNIT", "JUNIT", "0029123", "JUNIT");
-		
-		this.veiculoService.save(veiculoOrigem);
 
 		ResponseEntity<Long> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("veiculo/" + veiculoOrigem.getId() ), HttpMethod.DELETE, buildAuthenticationSemBodyEToken(),

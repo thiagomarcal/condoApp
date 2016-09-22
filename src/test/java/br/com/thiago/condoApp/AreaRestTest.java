@@ -120,9 +120,6 @@ public class AreaRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Area area1 = modeloUtil.criaArea("Piscina JUNIT", "Piscina Teste JUNIT");
-
-		
-		this.areaService.save(area1);
 		
 		ResponseEntity<List<Area>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("area?nome=" + area1.getNome()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -176,8 +173,6 @@ public class AreaRestTest {
 		
 		Area areaOrigem = modeloUtil.criaArea("Piscina JUNIT", "Piscina Teste JUNIT");
 		
-		this.areaService.save(areaOrigem);
-		
 		Area areaAlterado = new Area();
 		areaAlterado.setId(areaOrigem.getId());
 		areaAlterado.setNome("Piscina NOVA");
@@ -203,7 +198,6 @@ public class AreaRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Area areaOrigem = modeloUtil.criaArea("Piscina JUNIT", "Piscina Teste JUNIT");
-		this.areaService.save(areaOrigem);
 	
 		Reserva reserva = new Reserva();
 		reserva.setDataInicio(new Date());
