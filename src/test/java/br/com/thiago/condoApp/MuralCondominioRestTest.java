@@ -5,7 +5,10 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,7 +27,7 @@ import org.springframework.web.client.RestTemplate;
 
 import br.com.thiago.condoApp.modelo.AuthenticationRequest;
 import br.com.thiago.condoApp.modelo.AuthenticationResponse;
-import br.com.thiago.condoApp.modelo.Condominio;
+import br.com.thiago.condoApp.modelo.Mensagem;
 import br.com.thiago.condoApp.modelo.MuralCondominio;
 import br.com.thiago.condoApp.security.TestApiConfig;
 import br.com.thiago.condoApp.servico.MuralCondominioService;
@@ -95,8 +98,6 @@ public class MuralCondominioRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		MuralCondominio muralCondo = modeloUtil.criaMuralCondominio();
-				
-		this.muralCondoService.save(muralCondo);
 
 		ResponseEntity<MuralCondominio> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("muralCondominio/" + muralCondo.getId()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -122,8 +123,6 @@ public class MuralCondominioRestTest {
 		
 		MuralCondominio muralCondo = modeloUtil.criaMuralCondominio();
 		
-		this.muralCondoService.save(muralCondo);
-		
 		ResponseEntity<Long> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("muralCondominio/" + muralCondo.getId() ), HttpMethod.DELETE, buildAuthenticationSemBodyEToken(),
 				Long.class);
@@ -144,22 +143,28 @@ public class MuralCondominioRestTest {
 		
 		MuralCondominio muralCondo = modeloUtil.criaMuralCondominio();
 		
-		this.muralCondoService.save(muralCondo);
+		Mensagem ms2 = modeloUtil.criaMensagem("testeJunitUpdate", new Date());
 		
-		Condominio condominioNovo = modeloUtil.criaCondominio("CondoNOvo", "TESTE", "203", "SP");
-		
-		MuralCondominio muralAlterado = new MuralCondominio();
-		muralAlterado.setCondominio(condominioNovo);
-		muralAlterado.setMensagens(muralCondo.getMensagens());
+		muralCondo.getMensagens().add(ms2);
 	
 		ResponseEntity<MuralCondominio> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("muralCondominio"), HttpMethod.PUT, buildAuthenticationComBodyEToken(muralAlterado),
+				TestApiConfig.getAbsolutePath("muralCondominio"), HttpMethod.PUT, buildAuthenticationComBodyEToken(muralCondo),
 				MuralCondominio.class);
 
 		try {
 			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
 			MuralCondominio muralCondoResp = responseEntity.getBody();
-			assertTrue(muralCondoResp.getCondominio().equals(muralAlterado.getCondominio()));
+			
+			assertTrue(muralCondoResp.getMensagens().size() == 2);
+			
+			Set<String> mensagensSet = new HashSet<>();
+			for (Mensagem mensagem : muralCondoResp.getMensagens()) {
+				mensagensSet.add(mensagem.getMensagem());
+			}
+			
+			assertTrue(mensagensSet.contains("TESTE JUNIT"));
+			assertTrue(mensagensSet.contains("testeJunitUpdate"));
+		
 			
 			this.muralCondoService.delete(muralCondoResp.getId());
 			

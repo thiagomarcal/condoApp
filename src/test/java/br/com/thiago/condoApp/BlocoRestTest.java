@@ -65,7 +65,6 @@ public class BlocoRestTest {
 		
 		
 		Bloco bloco1 = modeloUtil.criaBlocoComCondominio("Bloco 1");
-		this.blocoService.save(bloco1);
 		
 		ResponseEntity<List<Bloco>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("blocos"), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -96,7 +95,6 @@ public class BlocoRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Bloco bloco1 = modeloUtil.criaBlocoComCondominio("Bloco 1");
-		this.blocoService.save(bloco1);
 		
 		ResponseEntity<Bloco> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("bloco/" + bloco1.getId()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -120,8 +118,6 @@ public class BlocoRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Bloco bloco1 = modeloUtil.criaBlocoComCondominio("Bloco1 Teste JUnit");
-		
-		this.blocoService.save(bloco1);
 		
 		ResponseEntity<List<Bloco>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("bloco?nome=" + bloco1.getNome()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -154,8 +150,6 @@ public class BlocoRestTest {
 		
 		Bloco blocoOrigem = modeloUtil.criaBlocoComCondominio("Bloco1 Teste JUnit");
 		
-		this.blocoService.save(blocoOrigem);
-		
 		Bloco blocoAlterado = new Bloco();
 		blocoAlterado.setId(blocoOrigem.getId());
 		blocoAlterado.setNome("Bloco1 Teste JUnit Alterado");
@@ -182,8 +176,6 @@ public class BlocoRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Bloco blocoOrigem = modeloUtil.criaBlocoComCondominio("Bloco1 Teste JUnit");
-		
-		this.blocoService.save(blocoOrigem);
 
 		ResponseEntity<Long> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("bloco/" + blocoOrigem.getId() ), HttpMethod.DELETE, buildAuthenticationSemBodyEToken(),
@@ -204,7 +196,6 @@ public class BlocoRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Bloco bloco1 = modeloUtil.criaBlocoComCondominio("Bloco1 Teste JUnit");
-		this.blocoService.save(bloco1);
 	
 		Edificio edificio = new Edificio();
 		edificio.setNome("Edificio1");

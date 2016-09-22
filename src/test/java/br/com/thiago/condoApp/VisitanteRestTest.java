@@ -65,8 +65,6 @@ public class VisitanteRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Visitante visitante1 = modeloUtil.criarVisitante("Marco MArques");
-		
-		this.visitanteService.save(visitante1);
 
 		ResponseEntity<List<Visitante>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("visitantes"), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -97,8 +95,6 @@ public class VisitanteRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Visitante visitante1 = modeloUtil.criarVisitante("Marco MArques");
-				
-		this.visitanteService.save(visitante1);
 
 		ResponseEntity<Visitante> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("visitante/" + visitante1.getId()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -122,8 +118,6 @@ public class VisitanteRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Visitante visitante1 = modeloUtil.criarVisitante("Marco MArques");
-		
-		this.visitanteService.save(visitante1);
 		
 		ResponseEntity<List<Visitante>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("visitante?nome=" + visitante1.getNome()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -153,8 +147,6 @@ public class VisitanteRestTest {
 		
 		Visitante visitanteOrigem = modeloUtil.criarVisitante("Marco MArques");
 		
-		this.visitanteService.save(visitanteOrigem);
-		
 		Visitante visitanteAlterado = new Visitante();
 		visitanteAlterado.setId(visitanteOrigem.getId());
 		visitanteAlterado.setNome("TesteJunitCondoALTERADO");
@@ -181,8 +173,6 @@ public class VisitanteRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Visitante visitanteOrigem = modeloUtil.criarVisitante("Marco MArques");
-		
-		this.visitanteService.save(visitanteOrigem);
 
 		ResponseEntity<Long> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("visitante/" + visitanteOrigem.getId() ), HttpMethod.DELETE, buildAuthenticationSemBodyEToken(),

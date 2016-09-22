@@ -22,11 +22,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
-import br.com.thiago.condoApp.modelo.Area;
 import br.com.thiago.condoApp.modelo.AuthenticationRequest;
 import br.com.thiago.condoApp.modelo.AuthenticationResponse;
-import br.com.thiago.condoApp.modelo.Morador;
 import br.com.thiago.condoApp.modelo.Reserva;
+import br.com.thiago.condoApp.modelo.Reserva.Situacao;
 import br.com.thiago.condoApp.security.TestApiConfig;
 import br.com.thiago.condoApp.servico.ReservaService;
 import br.com.thiago.condoApp.util.ModeloUtil;
@@ -67,9 +66,6 @@ public class ReservaRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Reserva reserva1 = modeloUtil.criaReserva();
-;		
-		this.reservaService.save(reserva1);
-
 		
 		ResponseEntity<List<Reserva>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("reservas"), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -99,8 +95,6 @@ public class ReservaRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Reserva reserva1 = modeloUtil.criaReserva();
-		
-		this.reservaService.save(reserva1);
 
 		ResponseEntity<Reserva> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("reserva/" + reserva1.getId()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -126,9 +120,6 @@ public class ReservaRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Reserva reserva1 = modeloUtil.criaReserva();
-		
-		this.reservaService.save(reserva1);
-
 		
 		ResponseEntity<List<Reserva>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("reserva?situacao=" + reserva1.getSituacao()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -157,15 +148,18 @@ public class ReservaRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Reserva reserva1 = modeloUtil.criaReserva();
+		//Muda pra rejeitado
+		reserva1.setSituacao(Situacao.REJEITADO);
+		
 		
 		ResponseEntity<Reserva> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("reserva"), HttpMethod.POST, buildAuthenticationComBodyEToken(reserva1),
+				TestApiConfig.getAbsolutePath("reserva"), HttpMethod.PUT, buildAuthenticationComBodyEToken(reserva1),
 				Reserva.class);
 
 		try {
 			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
 			Reserva reservaResp = responseEntity.getBody();
-			assertTrue(reservaResp.getId().equals(reserva1.getId()));
+			assertTrue(reservaResp.getSituacao().equals(reserva1.getSituacao()));
 			
 			this.reservaService.delete(reservaResp.getId());
 			
@@ -180,8 +174,6 @@ public class ReservaRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Reserva reservaOrigem = modeloUtil.criaReserva();
-
-		this.reservaService.save(reservaOrigem);
 		
 		ResponseEntity<Long> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("reserva/" + reservaOrigem.getId() ), HttpMethod.DELETE, buildAuthenticationSemBodyEToken(),
@@ -202,28 +194,9 @@ public class ReservaRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Reserva reserva = modeloUtil.criaReserva();
-
-		this.reservaService.save(reserva);
-
-		
-		ResponseEntity<List<Area>> responseEntityArea = client.exchange(
-				TestApiConfig.getAbsolutePath("area"), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
-				new ParameterizedTypeReference<List<Area>>(){});
-		
-		Area areaResp = null;
-		
-		try {
-			assertThat(responseEntityArea.getStatusCode(), is(HttpStatus.OK));
-			areaResp = (Area) responseEntityArea.getBody();
-			
-		}catch (Exception e) {
-			// TODO: handle exception
-		}
-		
-		Morador morador = modeloUtil.criaMorador();
-
+	
 		ResponseEntity<Reserva> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("reserva/salvar/?area=" + areaResp.getId() +"morador=" + morador.getId()), HttpMethod.POST, buildAuthenticationComBodyEToken(reserva),
+				TestApiConfig.getAbsolutePath("reserva"), HttpMethod.POST, buildAuthenticationComBodyEToken(reserva),
 				Reserva.class);
 
 		try {

@@ -64,8 +64,6 @@ public class CondominioRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Condominio cond1 = modeloUtil.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
-		
-		this.condominioService.save(cond1);
 
 		ResponseEntity<List<Condominio>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("condominios"), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -94,8 +92,6 @@ public class CondominioRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Condominio cond1 = modeloUtil.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
-				
-		this.condominioService.save(cond1);
 
 		ResponseEntity<Condominio> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("condominio/" + cond1.getId()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -118,8 +114,6 @@ public class CondominioRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Condominio cond1 = modeloUtil.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
-		
-		this.condominioService.save(cond1);
 		
 		ResponseEntity<List<Condominio>> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("condominio?name=" + cond1.getName()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
@@ -170,8 +164,6 @@ public class CondominioRestTest {
 		
 		Condominio condOrigem = modeloUtil.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
 		
-		this.condominioService.save(condOrigem);
-		
 		Condominio condAlterado = new Condominio();
 		condAlterado.setId(condOrigem.getId());
 		condAlterado.setName("TesteJunitCondoALTERADO");
@@ -198,8 +190,6 @@ public class CondominioRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Condominio condOrigem = modeloUtil.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
-		
-		this.condominioService.save(condOrigem);
 
 		ResponseEntity<Long> responseEntity = client.exchange(
 				TestApiConfig.getAbsolutePath("condominio/" + condOrigem.getId() ), HttpMethod.DELETE, buildAuthenticationSemBodyEToken(),
@@ -220,7 +210,6 @@ public class CondominioRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Condominio cond1 = modeloUtil.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
-		this.condominioService.save(cond1);
 	
 		Area area = new Area();
 		area.setNome("TesteJunit");
@@ -247,7 +236,6 @@ public class CondominioRestTest {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
 		Condominio cond1 = modeloUtil.criaCondominio("TesteJunitCondo", "TesteJunit", "25", "RJ");
-		this.condominioService.save(cond1);
 	
 		Bloco bloco = new Bloco();
 		bloco.setNome("TesteJunit");
