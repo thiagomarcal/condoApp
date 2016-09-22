@@ -1,6 +1,7 @@
 package br.com.thiago.condoApp.modelo;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -38,6 +39,9 @@ public class Condominio implements Serializable{
 	
 	@Column
 	private String cpnj;
+	
+	@Column
+	private Date dataCriacao;
 	
 	
 	@OneToMany(mappedBy = "condominio", targetEntity = Bloco.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -104,6 +108,14 @@ public class Condominio implements Serializable{
 	public void setCpnj(String cpnj) {
 		this.cpnj = cpnj;
 	}
+	
+	public Date getDataCriacao() {
+		return dataCriacao;
+	}
+
+	public void setDataCriacao(Date dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
 
 	public Set<Bloco> getBlocos() {
 		return blocos;
@@ -128,6 +140,8 @@ public class Condominio implements Serializable{
 	public void setMurais(Set<MuralCondominio> murais) {
 		this.murais = murais;
 	}
+	
+	
 
 	
 }

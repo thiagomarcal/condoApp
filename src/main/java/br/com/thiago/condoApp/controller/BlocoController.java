@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ public class BlocoController {
 	private EdificioService edificioService;
 	
 	@RequestMapping(value = "/blocos", method = RequestMethod.GET)
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<List<Bloco>> listar() {
 		return new ResponseEntity<List<Bloco>>(blocoService.findAll(), HttpStatus.OK);
 	}
@@ -54,7 +56,7 @@ public class BlocoController {
 	}
 	
 	@RequestMapping(value = "/bloco/{id}/edificio", method = RequestMethod.POST)
-	public ResponseEntity<Edificio> criarEdificio(@PathVariable("id") Long id, @RequestBody Edificio edificio) {
+	public ResponseEntity<Edificio> criarBlocoEdificio(@PathVariable("id") Long id, @RequestBody Edificio edificio) {
 		edificio.setBloco(blocoService.findOne(id));
 		edificioService.save(edificio);
 		return new ResponseEntity<Edificio>(edificio, HttpStatus.OK);

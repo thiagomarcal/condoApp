@@ -31,14 +31,14 @@ public class AreaController {
 		return new ResponseEntity<List<Area>>(areaService.findAll(), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/area", method = RequestMethod.GET)
-	public ResponseEntity<List<Area>> listarPorNome(@RequestParam("nome") String nome) {
-		return new ResponseEntity<List<Area>>(areaService.findByNome(nome), HttpStatus.OK);
-	}
-	
 	@RequestMapping(value = "/area/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Area> pegar(@PathVariable("id") Long id) {
 		return new ResponseEntity<Area>(areaService.findOne(id), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/area", method = RequestMethod.GET)
+	public ResponseEntity<List<Area>> listarPorNome(@RequestParam("nome") String nome) {
+		return new ResponseEntity<List<Area>>(areaService.findByNome(nome), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/area/{id}", method = RequestMethod.DELETE)

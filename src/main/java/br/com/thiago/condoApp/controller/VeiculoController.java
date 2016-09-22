@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.thiago.condoApp.modelo.Veiculo;
+import br.com.thiago.condoApp.servico.MoradorService;
 import br.com.thiago.condoApp.servico.VeiculoService;
 
 @RestController
@@ -21,6 +22,9 @@ public class VeiculoController {
 	@Autowired
 	private VeiculoService veiculoService;
 	
+	@Autowired
+	private MoradorService moradorService;
+	
 	@RequestMapping(value = "/veiculos", method = RequestMethod.GET)
 	public ResponseEntity<List<Veiculo>> listar() {
 		return new ResponseEntity<List<Veiculo>>(veiculoService.findAll(), HttpStatus.OK);
@@ -28,8 +32,8 @@ public class VeiculoController {
 	
 	
 	@RequestMapping(value = "/veiculo", method = RequestMethod.GET)
-	public ResponseEntity<List<Veiculo>> listarPorNome(@RequestParam("nome") String marca) {
-		return new ResponseEntity<List<Veiculo>>(veiculoService.findByMarca(marca), HttpStatus.OK);
+	public ResponseEntity<List<Veiculo>> listarPorPlaca(@RequestParam("placa") String placa) {
+		return new ResponseEntity<List<Veiculo>>(veiculoService.findByPlaca(placa), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/veiculo/{id}", method = RequestMethod.GET)
@@ -44,7 +48,15 @@ public class VeiculoController {
 	}
 	
 	@RequestMapping(value = "/veiculo", method = RequestMethod.PUT)
-	public ResponseEntity<Veiculo> update(@RequestBody Veiculo veiculo) {
+	public ResponseEntity<Veiculo> updateVeiculo(@RequestBody Veiculo veiculo) {
+		veiculoService.save(veiculo);
+		return new ResponseEntity<Veiculo>(veiculo, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = "/veiculo/salvar", method = RequestMethod.POST)
+	public ResponseEntity<Veiculo> criar(@RequestParam("morador") Long idMorador, @RequestBody Veiculo veiculo) {
+		veiculo.setMorador(moradorService.findOne(idMorador));
 		veiculoService.save(veiculo);
 		return new ResponseEntity<Veiculo>(veiculo, HttpStatus.OK);
 	}

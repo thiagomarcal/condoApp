@@ -3,6 +3,8 @@ package br.com.thiago.condoApp.servico;
 import java.util.List;
 
 import br.com.thiago.condoApp.modelo.Encomenda;
+import br.com.thiago.condoApp.modelo.Encomenda.Tipo;
+
 
 public interface EncomendaService {
 
@@ -10,6 +12,7 @@ public interface EncomendaService {
 	public void save(Encomenda visitante);
 	public Encomenda findOne(Long id);
 	public void delete(Long id);
-	public List<Encomenda> findByTipo(String tipo);
+	public List<Encomenda> findByTipo(Tipo tipo);
+	
 	
 }

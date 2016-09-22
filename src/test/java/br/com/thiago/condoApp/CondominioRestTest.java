@@ -290,6 +290,7 @@ public class CondominioRestTest {
 		authenticationToken = authenticationResponse.getBody().getToken();
 	}
 
+	
 	private HttpEntity<Object> buildAuthenticationSemBodyEToken() {
 		return RequestEntityBuilder.buildRequestEntityWithoutBody(authenticationToken);
 	}

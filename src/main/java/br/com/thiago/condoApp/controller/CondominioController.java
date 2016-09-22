@@ -66,6 +66,7 @@ public class CondominioController {
 		return new ResponseEntity<Condominio>(condominio, HttpStatus.OK);
 	}
 	
+	
 	@RequestMapping(value = "/condominio/{id}/area", method = RequestMethod.POST)
 	public ResponseEntity<Area> criarArea(@PathVariable("id") Long id, @RequestBody Area area) {
 		area.setCondominio(condominioService.findOne(id));
