@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Condominio implements Serializable{
 	
@@ -43,7 +45,7 @@ public class Condominio implements Serializable{
 	@Column
 	private Date dataCriacao;
 	
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "condominio", targetEntity = Bloco.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Bloco> blocos;
 	
