@@ -62,6 +62,12 @@ public class BlocoController {
 		return new ResponseEntity<Edificio>(edificio, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/bloco", method = RequestMethod.POST)
+	public ResponseEntity<Bloco> criarBloco(@RequestBody Bloco bloco) {
+		blocoService.save(bloco);
+		return new ResponseEntity<Bloco>(bloco, HttpStatus.OK);
+	}
+	
 	
 
 }

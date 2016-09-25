@@ -30,7 +30,7 @@ public class Bloco implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name = "condominio_id")
-	@JsonIgnore
+//	@JsonIgnore
 	private Condominio condominio;
 	
 	@OneToMany(mappedBy = "bloco", targetEntity = Edificio.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
