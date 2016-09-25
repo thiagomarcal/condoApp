@@ -53,6 +53,12 @@ public class AreaController {
 		return new ResponseEntity<Area>(area, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/area", method = RequestMethod.POST)
+	public ResponseEntity<Area> criaArea(@RequestBody Area area) {
+		areaService.save(area);
+		return new ResponseEntity<Area>(area, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/area/{id}/reserva", method = RequestMethod.POST)
 	public ResponseEntity<Reserva> criarReserva(@PathVariable("id") Long id, @RequestBody Reserva reserva) {
 		reserva.setArea(areaService.findOne(id));

@@ -33,7 +33,7 @@ public class Area implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "condominio_id")
-	@JsonIgnore
+//	@JsonIgnore
 	private Condominio condominio;
 	
 	@OneToMany(mappedBy = "area", targetEntity = Reserva.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
