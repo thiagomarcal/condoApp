@@ -18,19 +18,29 @@ public class User implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	@Id
+	@Column(name="id")
+	@GeneratedValue
 	private Long id;
+	
+	@Column(name = "username")
 	private String username;
+	
+	@Column(name = "password")
 	private String password;
+	
+	@Column(name = "last_password_reset")
 	private Date lastPasswordReset;
+	
+	@Column(name = "authorities")
 	private String authorities;
 	
-	@OneToOne(mappedBy = "user", targetEntity = Pessoa.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "user", targetEntity = Pessoa.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Pessoa pessoa;
 
 	public User() {
 		super();
 	}
-
 
 	public User(String username, String password, String email, Date lastPasswordReset, String authorities, Pessoa pessoa) {
 		this.username = username;
@@ -40,9 +50,7 @@ public class User implements Serializable{
 		this.pessoa = pessoa;
 	}
 
-	@Id
-	@Column(name="id")
-	@GeneratedValue
+	
 	public Long getId() {
 		return id;
 	}
@@ -52,7 +60,7 @@ public class User implements Serializable{
 		this.id = id;
 	}
 
-	@Column(name = "username")
+	
 	public String getUsername() {
 		return username;
 	}
@@ -62,7 +70,7 @@ public class User implements Serializable{
 		this.username = username;
 	}
 
-	@Column(name = "password")
+	
 	public String getPassword() {
 		return password;
 	}
@@ -72,7 +80,7 @@ public class User implements Serializable{
 		this.password = password;
 	}
 
-	@Column(name = "last_password_reset")
+	
 	public Date getLastPasswordReset() {
 		return lastPasswordReset;
 	}
@@ -82,7 +90,7 @@ public class User implements Serializable{
 		this.lastPasswordReset = lastPasswordReset;
 	}
 
-	@Column(name = "authorities")
+	
 	public String getAuthorities() {
 		return authorities;
 	}
