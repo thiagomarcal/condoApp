@@ -28,13 +28,13 @@ public class Pessoa implements Serializable{
 	@Column
 	private String email;
 	
-	@OneToOne(mappedBy = "pessoa", targetEntity = Morador.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Morador morador;
-	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private User user;
+	
+	@OneToOne(mappedBy = "pessoa", targetEntity = Morador.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Morador morador;
 	
 	@Column
 	private String cpf;
