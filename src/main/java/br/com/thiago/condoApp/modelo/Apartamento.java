@@ -10,10 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Apartamento implements Serializable {
@@ -30,9 +28,9 @@ public class Apartamento implements Serializable {
 	@Column
 	private String nome;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "edificio_id")
-	@JsonIgnore
+//	@JsonIgnore
 	private Edificio edificio;
 	
 	@OneToMany(mappedBy = "apartamento", targetEntity = Morador.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
