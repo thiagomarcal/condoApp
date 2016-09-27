@@ -53,8 +53,8 @@ public class Condominio implements Serializable{
 	@OneToMany(mappedBy = "condominio", targetEntity = Area.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Area> areas;
 	
-	@OneToMany(mappedBy = "condominio", targetEntity = MuralCondominio.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<MuralCondominio> murais;
+	@OneToMany(mappedBy = "condominio", targetEntity = Destino.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Destino> destinos;
 
 	public Long getId() {
 		return id;
@@ -79,12 +79,12 @@ public class Condominio implements Serializable{
 	public void setLogradouro(String logradouro) {
 		this.logradouro = logradouro;
 	}
-	
-	public String getNumero(){
+
+	public String getNumero() {
 		return numero;
 	}
-	
-	public void setNumero(String numero){
+
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 
@@ -111,7 +111,7 @@ public class Condominio implements Serializable{
 	public void setCpnj(String cpnj) {
 		this.cpnj = cpnj;
 	}
-	
+
 	public Date getDataCriacao() {
 		return dataCriacao;
 	}
@@ -136,15 +136,12 @@ public class Condominio implements Serializable{
 		this.areas = areas;
 	}
 
-	public Set<MuralCondominio> getMurais() {
-		return murais;
+	public Set<Destino> getDestinos() {
+		return destinos;
 	}
 
-	public void setMurais(Set<MuralCondominio> murais) {
-		this.murais = murais;
+	public void setDestinos(Set<Destino> destinos) {
+		this.destinos = destinos;
 	}
-	
-	
-
 	
 }

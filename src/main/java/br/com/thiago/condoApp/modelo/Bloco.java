@@ -34,8 +34,8 @@ public class Bloco implements Serializable{
 	@OneToMany(mappedBy = "bloco", targetEntity = Edificio.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Edificio> edificios;
 	
-	@OneToMany(mappedBy = "bloco", targetEntity = MuralBloco.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<MuralBloco> murais;
+	@OneToMany(mappedBy = "bloco", targetEntity = Destino.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Destino> destinos;
 
 	public Long getId() {
 		return id;
@@ -69,12 +69,12 @@ public class Bloco implements Serializable{
 		this.edificios = edificios;
 	}
 
-	public Set<MuralBloco> getMurais() {
-		return murais;
+	public Set<Destino> getDestinos() {
+		return destinos;
 	}
 
-	public void setMurais(Set<MuralBloco> murais) {
-		this.murais = murais;
-	}
+	public void setDestinos(Set<Destino> destinos) {
+		this.destinos = destinos;
+	}	
 
 }

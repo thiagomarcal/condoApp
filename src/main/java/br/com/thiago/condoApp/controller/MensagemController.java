@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.thiago.condoApp.modelo.Mensagem;
 import br.com.thiago.condoApp.servico.MensagemService;
-import br.com.thiago.condoApp.servico.MuralBlocoService;
-import br.com.thiago.condoApp.servico.MuralCondominioService;
-import br.com.thiago.condoApp.servico.MuralEdificioService;
+import br.com.thiago.condoApp.servico.MuralService;
 
 @RestController
 public class MensagemController {
@@ -25,13 +23,7 @@ public class MensagemController {
 	private MensagemService mensagemService;
 	
 	@Autowired
-	private MuralCondominioService muralCondominioService;
-	
-	@Autowired
-	private MuralBlocoService muralBlocoService;
-	
-	@Autowired
-	private MuralEdificioService muralEdificioService;
+	private MuralService muralService;
 	
 	@RequestMapping(value = "/mensagens", method = RequestMethod.GET)
 	public ResponseEntity<List<Mensagem>> listar() {
@@ -55,26 +47,33 @@ public class MensagemController {
 		return new ResponseEntity<Mensagem>(mensagem, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/mensagem/muralCondominio", method = RequestMethod.POST)
-	public ResponseEntity<Mensagem> criarMensagemMuralCondominio(@RequestParam("id") Long idMuralCondominio, @RequestBody Mensagem mensagem) {
-		mensagem.setMuralCondominio(muralCondominioService.findOne(idMuralCondominio));
+	@RequestMapping(value = "/mensagem/mural", method = RequestMethod.POST)
+	public ResponseEntity<Mensagem> criarMensagemMuralCondominio(@RequestParam("id") Long idMural, @RequestBody Mensagem mensagem) {
+		mensagem.setMural(muralService.findOne(idMural));
 		mensagemService.save(mensagem);
 		return new ResponseEntity<Mensagem>(mensagem, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/mensagem/muralBloco", method = RequestMethod.POST)
-	public ResponseEntity<Mensagem> criarMensagemMuralBloco(@RequestParam("id") Long idMuralBloco, @RequestBody Mensagem mensagem) {
-		mensagem.setMuralBloco(muralBlocoService.findOne(idMuralBloco));
-		mensagemService.save(mensagem);
-		return new ResponseEntity<Mensagem>(mensagem, HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/mensagem/muralEdificio", method = RequestMethod.POST)
-	public ResponseEntity<Mensagem> criarMensagemMuralEdificio(@RequestParam("id") Long idMuralEdificio, @RequestBody Mensagem mensagem) {
-		mensagem.setMuralEdificio(muralEdificioService.findOne(idMuralEdificio));
-		mensagemService.save(mensagem);
-		return new ResponseEntity<Mensagem>(mensagem, HttpStatus.OK);
-	}
+//	@RequestMapping(value = "/mensagem/muralCondominio", method = RequestMethod.POST)
+//	public ResponseEntity<Mensagem> criarMensagemMuralCondominio(@RequestParam("id") Long idMuralCondominio, @RequestBody Mensagem mensagem) {
+//		mensagem.setMuralCondominio(muralCondominioService.findOne(idMuralCondominio));
+//		mensagemService.save(mensagem);
+//		return new ResponseEntity<Mensagem>(mensagem, HttpStatus.OK);
+//	}
+//	
+//	@RequestMapping(value = "/mensagem/muralBloco", method = RequestMethod.POST)
+//	public ResponseEntity<Mensagem> criarMensagemMuralBloco(@RequestParam("id") Long idMuralBloco, @RequestBody Mensagem mensagem) {
+//		mensagem.setMuralBloco(muralBlocoService.findOne(idMuralBloco));
+//		mensagemService.save(mensagem);
+//		return new ResponseEntity<Mensagem>(mensagem, HttpStatus.OK);
+//	}
+//	
+//	@RequestMapping(value = "/mensagem/muralEdificio", method = RequestMethod.POST)
+//	public ResponseEntity<Mensagem> criarMensagemMuralEdificio(@RequestParam("id") Long idMuralEdificio, @RequestBody Mensagem mensagem) {
+//		mensagem.setMuralEdificio(muralEdificioService.findOne(idMuralEdificio));
+//		mensagemService.save(mensagem);
+//		return new ResponseEntity<Mensagem>(mensagem, HttpStatus.OK);
+//	}
 	
 	@RequestMapping(value = "/mensagem", method = RequestMethod.POST)
 	public ResponseEntity<Mensagem> criarMensagem(@RequestBody Mensagem mensagem) {
