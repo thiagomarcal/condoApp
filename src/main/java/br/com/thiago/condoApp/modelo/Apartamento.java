@@ -1,3 +1,4 @@
+
 package br.com.thiago.condoApp.modelo;
 
 import java.io.Serializable;
@@ -10,8 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Apartamento implements Serializable {
@@ -28,7 +29,7 @@ public class Apartamento implements Serializable {
 	@Column
 	private String nome;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "edificio_id")
 //	@JsonIgnore
 	private Edificio edificio;
