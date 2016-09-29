@@ -8,14 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.OneToOne;
 
 @Entity
-public class MuralEdificio implements Serializable{
+public class Mural implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -23,13 +20,11 @@ public class MuralEdificio implements Serializable{
 	@GeneratedValue
 	private Long id;
 	
-	@OneToMany(mappedBy = "muralEdificio", targetEntity = Mensagem.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "mural", targetEntity = Mensagem.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Mensagem> mensagens;
 	
-	@ManyToOne
-	@JoinColumn(name = "edificio_id")
-	@JsonIgnore
-	private Edificio edificio;
+	@OneToOne(targetEntity = Destino.class, cascade = CascadeType.ALL)
+	private Destino destino;
 
 	public Long getId() {
 		return id;
@@ -47,11 +42,12 @@ public class MuralEdificio implements Serializable{
 		this.mensagens = mensagens;
 	}
 
-	public Edificio getEdificio() {
-		return edificio;
+	public Destino getDestino() {
+		return destino;
 	}
 
-	public void setEdificio(Edificio edificio) {
-		this.edificio = edificio;
+	public void setDestino(Destino destino) {
+		this.destino = destino;
 	}
+
 }

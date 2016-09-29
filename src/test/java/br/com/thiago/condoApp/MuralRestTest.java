@@ -28,16 +28,16 @@ import org.springframework.web.client.RestTemplate;
 import br.com.thiago.condoApp.modelo.AuthenticationRequest;
 import br.com.thiago.condoApp.modelo.AuthenticationResponse;
 import br.com.thiago.condoApp.modelo.Mensagem;
-import br.com.thiago.condoApp.modelo.MuralCondominio;
+import br.com.thiago.condoApp.modelo.Mural;
 import br.com.thiago.condoApp.security.TestApiConfig;
-import br.com.thiago.condoApp.servico.MuralCondominioService;
+import br.com.thiago.condoApp.servico.MuralService;
 import br.com.thiago.condoApp.util.ModeloUtil;
 import br.com.thiago.condoApp.util.RequestEntityBuilder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = App.class)
 @WebIntegrationTest
-public class MuralCondominioRestTest {
+public class MuralRestTest {
 	
 	
 	private RestTemplate client;
@@ -50,7 +50,7 @@ public class MuralCondominioRestTest {
 	private ModeloUtil modeloUtil;
 	
 	@Autowired
-	private MuralCondominioService muralCondoService;
+	private MuralService muralService;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -67,26 +67,26 @@ public class MuralCondominioRestTest {
 	public void requisicaoPegarTodosOsMurais() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
-		MuralCondominio muralCondo = modeloUtil.criaMuralCondominio();
+		Mural muralCondo = modeloUtil.criaMuralCondominio();
 		
-		this.muralCondoService.save(muralCondo);
+		this.muralService.save(muralCondo);
 
-		ResponseEntity<List<MuralCondominio>> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("muralCondominios"), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
-				new ParameterizedTypeReference<List<MuralCondominio>>(){});
+		ResponseEntity<List<Mural>> responseEntity = client.exchange(
+				TestApiConfig.getAbsolutePath("murais"), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
+				new ParameterizedTypeReference<List<Mural>>(){});
 
 		try {
 			
 			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-			List<MuralCondominio> listaMuralCondo = responseEntity.getBody();
+			List<Mural> listaMuralCondo = responseEntity.getBody();
 			
-			for (MuralCondominio muralCondominio : listaMuralCondo) {
+			for (Mural muralCondominio : listaMuralCondo) {
 				if (muralCondominio.getId() == muralCondo.getId()) {
 					assertTrue(muralCondominio.getId().equals(muralCondo.getId()));
 				}
 			}
 			
-			this.muralCondoService.delete(muralCondo.getId());
+			this.muralService.delete(muralCondo.getId());
 			
 		} catch (Exception e) {
 			fail("Should have returned an HTTP 400: Ok status code");
@@ -97,19 +97,19 @@ public class MuralCondominioRestTest {
 	public void requisicaoPegarMuralCondominioPorId() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
-		MuralCondominio muralCondo = modeloUtil.criaMuralCondominio();
+		Mural muralCondo = modeloUtil.criaMuralCondominio();
 
-		ResponseEntity<MuralCondominio> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("muralCondominio/" + muralCondo.getId()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
-				MuralCondominio.class);
+		ResponseEntity<Mural> responseEntity = client.exchange(
+				TestApiConfig.getAbsolutePath("mural/" + muralCondo.getId()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
+				Mural.class);
 
 		try {
 
 			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-			MuralCondominio muraCondoResp = responseEntity.getBody();
+			Mural muraCondoResp = responseEntity.getBody();
 			assertTrue(muraCondoResp.getId().equals(muralCondo.getId()));
 			
-			this.muralCondoService.delete(muralCondo.getId());
+			this.muralService.delete(muralCondo.getId());
 			
 		} catch (Exception e) {
 			fail("Should have returned an HTTP 400: Ok status code");
@@ -121,10 +121,10 @@ public class MuralCondominioRestTest {
 	public void requisicaoDeleteMuralCondomominio() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
-		MuralCondominio muralCondo = modeloUtil.criaMuralCondominio();
+		Mural muralCondo = modeloUtil.criaMuralCondominio();
 		
 		ResponseEntity<Long> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("muralCondominio/" + muralCondo.getId() ), HttpMethod.DELETE, buildAuthenticationSemBodyEToken(),
+				TestApiConfig.getAbsolutePath("mural/" + muralCondo.getId() ), HttpMethod.DELETE, buildAuthenticationSemBodyEToken(),
 				Long.class);
 
 		try {
@@ -141,19 +141,19 @@ public class MuralCondominioRestTest {
 	public void requisicaoUpdateMuralCondominio() throws Exception {
 		this.inicializaAutorizacaoValidaComTokenAdmin();
 		
-		MuralCondominio muralCondo = modeloUtil.criaMuralCondominio();
+		Mural muralCondo = modeloUtil.criaMuralCondominio();
 		
 		Mensagem ms2 = modeloUtil.criaMensagem("testeJunitUpdate", new Date());
 		
 		muralCondo.getMensagens().add(ms2);
 	
-		ResponseEntity<MuralCondominio> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("muralCondominio"), HttpMethod.PUT, buildAuthenticationComBodyEToken(muralCondo),
-				MuralCondominio.class);
+		ResponseEntity<Mural> responseEntity = client.exchange(
+				TestApiConfig.getAbsolutePath("mural"), HttpMethod.PUT, buildAuthenticationComBodyEToken(muralCondo),
+				Mural.class);
 
 		try {
 			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-			MuralCondominio muralCondoResp = responseEntity.getBody();
+			Mural muralCondoResp = responseEntity.getBody();
 			
 			assertTrue(muralCondoResp.getMensagens().size() == 2);
 			
@@ -166,7 +166,7 @@ public class MuralCondominioRestTest {
 			assertTrue(mensagensSet.contains("testeJunitUpdate"));
 		
 			
-			this.muralCondoService.delete(muralCondoResp.getId());
+			this.muralService.delete(muralCondoResp.getId());
 			
 		} catch (Exception e) {
 			fail("Should have returned an HTTP 400: Ok status code");
