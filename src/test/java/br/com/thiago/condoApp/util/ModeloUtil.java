@@ -11,13 +11,13 @@ import br.com.thiago.condoApp.modelo.Apartamento;
 import br.com.thiago.condoApp.modelo.Area;
 import br.com.thiago.condoApp.modelo.Bloco;
 import br.com.thiago.condoApp.modelo.Condominio;
+import br.com.thiago.condoApp.modelo.Destino;
 import br.com.thiago.condoApp.modelo.Edificio;
 import br.com.thiago.condoApp.modelo.Encomenda;
 import br.com.thiago.condoApp.modelo.Encomenda.Tipo;
 import br.com.thiago.condoApp.modelo.Mensagem;
 import br.com.thiago.condoApp.modelo.Morador;
-import br.com.thiago.condoApp.modelo.MuralBloco;
-import br.com.thiago.condoApp.modelo.MuralCondominio;
+import br.com.thiago.condoApp.modelo.Mural;
 import br.com.thiago.condoApp.modelo.Pessoa;
 import br.com.thiago.condoApp.modelo.Reserva;
 import br.com.thiago.condoApp.modelo.Reserva.Situacao;
@@ -30,8 +30,7 @@ import br.com.thiago.condoApp.servico.CondominioService;
 import br.com.thiago.condoApp.servico.EdificioService;
 import br.com.thiago.condoApp.servico.EncomendaService;
 import br.com.thiago.condoApp.servico.MoradorService;
-import br.com.thiago.condoApp.servico.MuralBlocoService;
-import br.com.thiago.condoApp.servico.MuralCondominioService;
+import br.com.thiago.condoApp.servico.MuralService;
 import br.com.thiago.condoApp.servico.PessoaService;
 import br.com.thiago.condoApp.servico.ReservaService;
 import br.com.thiago.condoApp.servico.VeiculoService;
@@ -74,10 +73,7 @@ public class ModeloUtil {
 	private ReservaService reservaService;
 	
 	@Autowired
-	private MuralCondominioService muralCondominioService;
-	
-	@Autowired
-	private MuralBlocoService muralBlocoService;
+	private MuralService muralService;
 	
 
 	public Reserva criaReserva() {
@@ -313,7 +309,7 @@ public class ModeloUtil {
 	}
 	
 	
-	public MuralCondominio criaMuralCondominio(){
+	public Mural criaMuralCondominio(){
 		
 		Condominio condominio = this.criaCondominio("Condo. JUNIT", "Estrada Junit", "260", "RJ");
 		
@@ -322,17 +318,19 @@ public class ModeloUtil {
 		Set<Mensagem> mensagemLista = new HashSet<Mensagem>();
 		mensagemLista.add(mensagem);
 		
-		MuralCondominio muralCondo = new MuralCondominio();
-		muralCondo.setCondominio(condominio);
+		Mural muralCondo = new Mural();
+		Destino destinoCondominio = new Destino();
+		destinoCondominio.setCondominio(condominio);
+		muralCondo.setDestino(destinoCondominio);
 		muralCondo.setMensagens(mensagemLista);
 		
-		this.muralCondominioService.save(muralCondo);
+		this.muralService.save(muralCondo);
 		
 		return muralCondo;
 	}
 	
 	
-	public MuralBloco criaMuralBloco(){
+	public Mural criaMuralBloco(){
 		
 		Bloco bloco = this.criaBlocoComCondominio("BLOCO1");
 		
@@ -341,11 +339,13 @@ public class ModeloUtil {
 		Set<Mensagem> mensagemLista = new HashSet<Mensagem>();
 		mensagemLista.add(mensagem);
 		
-		MuralBloco muralBloco = new MuralBloco();
-		muralBloco.setBloco(bloco);
+		Mural muralBloco = new Mural();
+		Destino destinoBloco = new Destino();
+		destinoBloco.setBloco(bloco);
+		muralBloco.setDestino(destinoBloco);
 		muralBloco.setMensagens(mensagemLista);
 		
-		this.muralBlocoService.save(muralBloco);
+		this.muralService.save(muralBloco);
 		
 		return muralBloco;
 	}
