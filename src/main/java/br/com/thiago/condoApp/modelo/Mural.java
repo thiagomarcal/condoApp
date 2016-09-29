@@ -23,7 +23,7 @@ public class Mural implements Serializable{
 	@OneToMany(mappedBy = "mural", targetEntity = Mensagem.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Mensagem> mensagens;
 	
-	@OneToOne(mappedBy = "mural", targetEntity = Mensagem.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(targetEntity = Destino.class, cascade = CascadeType.ALL)
 	private Destino destino;
 
 	public Long getId() {

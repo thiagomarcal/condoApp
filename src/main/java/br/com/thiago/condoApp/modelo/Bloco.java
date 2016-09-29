@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Bloco implements Serializable{
 
@@ -34,6 +36,7 @@ public class Bloco implements Serializable{
 	@OneToMany(mappedBy = "bloco", targetEntity = Edificio.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Edificio> edificios;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "bloco", targetEntity = Destino.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Destino> destinos;
 

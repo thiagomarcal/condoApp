@@ -69,9 +69,9 @@ public class MuralController {
 	}
 	
 	@RequestMapping(value = "/mural", method = RequestMethod.POST)
-	public ResponseEntity<Mural> criarMural(@RequestBody Mural condominio) {
-		muralService.save(condominio);
-		return new ResponseEntity<Mural>(condominio, HttpStatus.OK);
+	public ResponseEntity<Mural> criarMural(@RequestBody Mural mural) {
+		muralService.save(mural);
+		return new ResponseEntity<Mural>(mural, HttpStatus.OK);
 	}
 	
 	

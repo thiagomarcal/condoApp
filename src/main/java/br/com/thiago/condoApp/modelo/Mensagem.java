@@ -76,8 +76,5 @@ public class Mensagem implements Serializable{
 	public void setMural(Mural mural) {
 		this.mural = mural;
 	}
-
-
-	
 	
 }

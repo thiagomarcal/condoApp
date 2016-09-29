@@ -8,8 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Destino implements Serializable {
 
@@ -21,17 +19,14 @@ public class Destino implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "condominio_id")
-	@JsonIgnore
 	private Condominio condominio;
 	
 	@ManyToOne
 	@JoinColumn(name = "bloco_id")
-	@JsonIgnore
 	private Bloco bloco;
 	
 	@ManyToOne
 	@JoinColumn(name = "edificio_id")
-	@JsonIgnore
 	private Edificio edificio;
 
 	public Long getId() {

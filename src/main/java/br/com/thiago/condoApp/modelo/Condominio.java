@@ -53,6 +53,7 @@ public class Condominio implements Serializable{
 	@OneToMany(mappedBy = "condominio", targetEntity = Area.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Area> areas;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "condominio", targetEntity = Destino.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Destino> destinos;
 
