@@ -34,6 +34,7 @@ public class Pessoa implements Serializable{
 	private User user;
 	
 	@OneToOne(mappedBy = "pessoa", targetEntity = Morador.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Morador morador;
 	
 	@Column
