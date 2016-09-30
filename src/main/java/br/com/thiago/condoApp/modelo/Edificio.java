@@ -32,9 +32,10 @@ public class Edificio implements Serializable {
 	
 	@OneToOne
 	@JoinColumn(name = "bloco_id")
-	@JsonIgnore
+//	@JsonIgnore
 	private Bloco bloco;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "edificio", targetEntity = Apartamento.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Apartamento> apartamentos;
 	

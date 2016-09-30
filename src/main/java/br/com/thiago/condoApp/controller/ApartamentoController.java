@@ -53,6 +53,12 @@ public class ApartamentoController {
 		return new ResponseEntity<Apartamento>(apartamento, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/apartamento", method = RequestMethod.POST)
+	public ResponseEntity<Apartamento> criarApartamento(@RequestBody Apartamento apartamento) {
+		apartamentoService.save(apartamento);
+		return new ResponseEntity<Apartamento>(apartamento, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/apartamento/{id}/morador", method = RequestMethod.POST)
 	public ResponseEntity<Morador> criarMorador(@PathVariable("id") Long id, @RequestBody Morador morador) {
 		morador.setApartamento(apartamentoService.findOne(id));

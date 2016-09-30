@@ -1,3 +1,4 @@
+
 package br.com.thiago.condoApp.modelo;
 
 import java.io.Serializable;
@@ -32,10 +33,11 @@ public class Apartamento implements Serializable {
 	
 	@OneToOne
 	@JoinColumn(name = "edificio_id")
-	@JsonIgnore
+//	@JsonIgnore
 	private Edificio edificio;
 	
 	@OneToMany(mappedBy = "apartamento", targetEntity = Morador.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Set<Morador> moradores;
 	
 	

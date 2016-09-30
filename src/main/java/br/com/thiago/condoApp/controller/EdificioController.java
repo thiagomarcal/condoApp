@@ -49,9 +49,15 @@ public class EdificioController {
 	}
 	
 	@RequestMapping(value = "/edificio", method = RequestMethod.PUT)
-	public ResponseEntity<Edificio> update(@RequestBody Edificio area) {
-		edificioService.save(area);
-		return new ResponseEntity<Edificio>(area, HttpStatus.OK);
+	public ResponseEntity<Edificio> update(@RequestBody Edificio edificio) {
+		edificioService.save(edificio);
+		return new ResponseEntity<Edificio>(edificio, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/edificio", method = RequestMethod.POST)
+	public ResponseEntity<Edificio> criarEdificio(@RequestBody Edificio edificio) {
+		edificioService.save(edificio);
+		return new ResponseEntity<Edificio>(edificio, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/edificio/{id}/apartamento", method = RequestMethod.POST)
