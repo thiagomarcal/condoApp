@@ -52,5 +52,11 @@ public class MoradorController {
 		return new ResponseEntity<Morador>(morador, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/morador", method = RequestMethod.POST)
+	public ResponseEntity<Morador> criar(@RequestBody Morador morador) {
+		moradorService.save(morador);
+		return new ResponseEntity<Morador>(morador, HttpStatus.OK);
+	}
+	
 
 }
