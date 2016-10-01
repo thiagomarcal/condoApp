@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Mural implements Serializable{
 
@@ -21,6 +23,7 @@ public class Mural implements Serializable{
 	private Long id;
 	
 	@OneToMany(mappedBy = "mural", targetEntity = Mensagem.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Set<Mensagem> mensagens;
 	
 	@OneToOne(targetEntity = Destino.class, cascade = CascadeType.ALL)

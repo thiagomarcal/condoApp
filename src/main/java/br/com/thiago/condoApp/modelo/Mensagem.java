@@ -11,8 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Mensagem implements Serializable{
 
@@ -21,6 +19,9 @@ public class Mensagem implements Serializable{
 	@Id
 	@GeneratedValue
 	private Long id;
+	
+	@Column
+	private String assunto;
 	
 	@Column
 	private String mensagem;
@@ -34,7 +35,6 @@ public class Mensagem implements Serializable{
 	
 	@OneToOne
 	@JoinColumn(name = "mural_id")
-	@JsonIgnore
 	private Mural mural;
 
 	public Long getId() {
@@ -43,6 +43,14 @@ public class Mensagem implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getAssunto() {
+		return assunto;
+	}
+
+	public void setAssunto(String assunto) {
+		this.assunto = assunto;
 	}
 
 	public String getMensagem() {
