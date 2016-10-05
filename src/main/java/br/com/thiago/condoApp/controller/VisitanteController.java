@@ -22,7 +22,6 @@ public class VisitanteController {
 	
 	@Autowired
 	private VisitanteService visitanteService;
-
 	
 	
 	@RequestMapping(value = "/visitantes", method = RequestMethod.GET)
@@ -53,17 +52,16 @@ public class VisitanteController {
 		visitanteService.save(visitante);
 		return new ResponseEntity<Visitante>(visitante, HttpStatus.OK);
 	}
-	
-	
+
 	@RequestMapping(value = "/visitante", method = RequestMethod.POST)
-	public ResponseEntity<Visitante> criarVisitante(@RequestBody Visitante visitante) {
-		if(visitante != null) {
-			visitante.setDataVisita(new Date());
-		}
-		
-		visitanteService.save(visitante);
-		return new ResponseEntity<Visitante>(visitante, HttpStatus.OK);
-	}
+		public ResponseEntity<Visitante> criarVisitante(@RequestBody Visitante visitante) {
+			if(visitante != null) {
+				visitante.setDataVisita(new Date());
+			}
+	 		visitanteService.save(visitante);
+	 		return new ResponseEntity<Visitante>(visitante, HttpStatus.OK);
+	 	}
+
 
 
 }
