@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Visitante implements Serializable {
 	
@@ -30,7 +28,6 @@ private static final long serialVersionUID = 1L;
 	
 	@OneToOne
 	@JoinColumn(name = "apartamento_id")
-	@JsonIgnore
 	private Apartamento apartamento;
 
 
