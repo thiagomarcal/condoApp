@@ -1,5 +1,6 @@
 package br.com.thiago.condoApp.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.thiago.condoApp.modelo.Visitante;
-import br.com.thiago.condoApp.servico.ApartamentoService;
 import br.com.thiago.condoApp.servico.VisitanteService;
 
 @RestController
@@ -22,9 +22,6 @@ public class VisitanteController {
 	
 	@Autowired
 	private VisitanteService visitanteService;
-	
-	@Autowired
-	private ApartamentoService apartamentoService;
 	
 	
 	@RequestMapping(value = "/visitantes", method = RequestMethod.GET)
@@ -55,14 +52,16 @@ public class VisitanteController {
 		visitanteService.save(visitante);
 		return new ResponseEntity<Visitante>(visitante, HttpStatus.OK);
 	}
-	
-	@RequestMapping(value = "/visitante/salvar", method = RequestMethod.POST)
-	public ResponseEntity<Visitante> criarVisitante(@RequestParam("apartamento") Long idApartamento, @RequestBody Visitante visitante) {
-		
-		visitante.setApartamento(apartamentoService.findOne(idApartamento));
-		visitanteService.save(visitante);
-		return new ResponseEntity<Visitante>(visitante, HttpStatus.OK);
-	}
+
+	@RequestMapping(value = "/visitante", method = RequestMethod.POST)
+		public ResponseEntity<Visitante> criarVisitante(@RequestBody Visitante visitante) {
+			if(visitante != null) {
+				visitante.setDataVisita(new Date());
+			}
+	 		visitanteService.save(visitante);
+	 		return new ResponseEntity<Visitante>(visitante, HttpStatus.OK);
+	 	}
+
 
 
 }
