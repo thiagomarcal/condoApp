@@ -1,14 +1,13 @@
 package br.com.thiago.condoApp.modelo;
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Veiculo implements Serializable {
@@ -39,7 +38,6 @@ public class Veiculo implements Serializable {
 	
 	@OneToOne
 	@JoinColumn(name = "morador_id")
-	@JsonIgnore
 	private Morador morador;
 
 	public Long getId() {
