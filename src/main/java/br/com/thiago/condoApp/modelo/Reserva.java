@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Reserva implements Serializable {
 
@@ -36,12 +34,10 @@ public class Reserva implements Serializable {
 	
 	@OneToOne
 	@JoinColumn(name = "area_id")
-	@JsonIgnore
 	private Area area;
 	
 	@OneToOne
 	@JoinColumn(name = "morador_id")
-	@JsonIgnore
 	private Morador morador;
 
 	public Long getId() {

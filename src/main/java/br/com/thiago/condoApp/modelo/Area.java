@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Area implements Serializable {
 
@@ -35,6 +37,7 @@ public class Area implements Serializable {
 	private Condominio condominio;
 	
 	@OneToMany(mappedBy = "area", targetEntity = Reserva.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Set<Reserva> reservas;
 
 	public Long getId() {
