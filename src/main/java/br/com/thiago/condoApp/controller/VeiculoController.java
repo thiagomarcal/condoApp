@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.thiago.condoApp.modelo.Veiculo;
-import br.com.thiago.condoApp.servico.MoradorService;
 import br.com.thiago.condoApp.servico.VeiculoService;
 
 @RestController
@@ -21,9 +20,6 @@ public class VeiculoController {
 	
 	@Autowired
 	private VeiculoService veiculoService;
-	
-	@Autowired
-	private MoradorService moradorService;
 	
 	@RequestMapping(value = "/veiculos", method = RequestMethod.GET)
 	public ResponseEntity<List<Veiculo>> listar() {
@@ -53,10 +49,9 @@ public class VeiculoController {
 		return new ResponseEntity<Veiculo>(veiculo, HttpStatus.OK);
 	}
 	
-	
-	@RequestMapping(value = "/veiculo/salvar", method = RequestMethod.POST)
-	public ResponseEntity<Veiculo> criar(@RequestParam("morador") Long idMorador, @RequestBody Veiculo veiculo) {
-		veiculo.setMorador(moradorService.findOne(idMorador));
+	@RequestMapping(value = "/veiculo", method = RequestMethod.POST)
+	public ResponseEntity<Veiculo> criar(@RequestBody Veiculo veiculo) {
+		
 		veiculoService.save(veiculo);
 		return new ResponseEntity<Veiculo>(veiculo, HttpStatus.OK);
 	}

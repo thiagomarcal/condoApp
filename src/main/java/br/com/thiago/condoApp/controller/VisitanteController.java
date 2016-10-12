@@ -54,13 +54,13 @@ public class VisitanteController {
 	}
 
 	@RequestMapping(value = "/visitante", method = RequestMethod.POST)
-		public ResponseEntity<Visitante> criarVisitante(@RequestBody Visitante visitante) {
-			if(visitante != null) {
-				visitante.setDataVisita(new Date());
-			}
-	 		visitanteService.save(visitante);
-	 		return new ResponseEntity<Visitante>(visitante, HttpStatus.OK);
-	 	}
+	public ResponseEntity<Visitante> criarVisitante(@RequestBody Visitante visitante) {
+		if (visitante != null) {
+			visitante.setDataVisita(new Date());
+		}
+		visitanteService.save(visitante);
+		return new ResponseEntity<Visitante>(visitante, HttpStatus.OK);
+	}
 
 
 
