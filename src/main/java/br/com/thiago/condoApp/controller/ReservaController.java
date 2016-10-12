@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.thiago.condoApp.modelo.Reserva;
 import br.com.thiago.condoApp.modelo.Reserva.Situacao;
+import br.com.thiago.condoApp.modelo.User;
 import br.com.thiago.condoApp.servico.AreaService;
 import br.com.thiago.condoApp.servico.MoradorService;
 import br.com.thiago.condoApp.servico.ReservaService;
+import br.com.thiago.condoApp.servico.UsuarioService;
 
 @RestController
 public class ReservaController {
@@ -29,6 +34,9 @@ public class ReservaController {
 	
 	@Autowired
 	private MoradorService moradorService;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 	
 	@RequestMapping(value = "/reservas", method = RequestMethod.GET)
 	public ResponseEntity<List<Reserva>> listar() {
@@ -67,8 +75,19 @@ public class ReservaController {
 	
 	@RequestMapping(value = "/reserva", method = RequestMethod.POST)
 	public ResponseEntity<Reserva> criarT(@RequestBody Reserva reserva) {
+		
+		User user = usuarioService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+		
+		reserva.setMorador(user.getPessoa().getMorador());
+		
 		reservaService.save(reserva);
 		return new ResponseEntity<Reserva>(reserva, HttpStatus.OK);
+	}
+	
+	@MessageMapping("/reserva")
+	@SendTo("/topic/reserva")
+	public Reserva mensageria(Reserva reserva) throws Exception {
+		return reserva;
 	}
 	
 	

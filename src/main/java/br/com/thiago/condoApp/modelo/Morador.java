@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Morador implements Serializable {
 
@@ -31,6 +33,7 @@ public class Morador implements Serializable {
 	private Pessoa pessoa;
 	
 	@OneToMany(mappedBy = "morador", targetEntity = Reserva.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Set<Reserva> reservas;
 	
 	@OneToMany(mappedBy = "morador", targetEntity = Veiculo.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
