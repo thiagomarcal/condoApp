@@ -37,6 +37,7 @@ public class Morador implements Serializable {
 	private Set<Reserva> reservas;
 	
 	@OneToMany(mappedBy = "morador", targetEntity = Veiculo.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Set<Veiculo> veiculos;
 
 	public Long getId() {
