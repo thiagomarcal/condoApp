@@ -149,7 +149,7 @@ public class ReservaRestTest {
 		
 		Reserva reserva1 = modeloUtil.criaReserva();
 		//Muda pra rejeitado
-		reserva1.setSituacao(Situacao.REJEITADO);
+		reserva1.setSituacao(Situacao.Rejeitado);
 		
 		
 		ResponseEntity<Reserva> responseEntity = client.exchange(

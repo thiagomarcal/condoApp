@@ -16,7 +16,7 @@ public class Reserva implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	public enum Situacao {
-		APROVADO, EM_ANDAMENTO, REJEITADO
+		Aprovado, Pendente, Rejeitado
 	}
 	
 	@Id
