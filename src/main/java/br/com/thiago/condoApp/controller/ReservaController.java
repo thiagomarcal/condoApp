@@ -43,6 +43,12 @@ public class ReservaController {
 		return new ResponseEntity<List<Reserva>>(reservaService.findAll(), HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/minhasreservas", method = RequestMethod.GET)
+	public ResponseEntity<List<Reserva>> listarReservasMorador() {
+		User user = usuarioService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+		return new ResponseEntity<List<Reserva>>(reservaService.findByMorador(user.getPessoa().getMorador()), HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/reserva", method = RequestMethod.GET)
 	public ResponseEntity<List<Reserva>> listarPorSituacao(@RequestParam("situacao") Situacao situacao) {
 		return new ResponseEntity<List<Reserva>>(reservaService.findBySituacao(situacao), HttpStatus.OK);
@@ -79,6 +85,7 @@ public class ReservaController {
 		User user = usuarioService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		
 		reserva.setMorador(user.getPessoa().getMorador());
+		reserva.setSituacao(Situacao.Pendente);
 		
 		reservaService.save(reserva);
 		return new ResponseEntity<Reserva>(reserva, HttpStatus.OK);
@@ -90,9 +97,4 @@ public class ReservaController {
 		return reserva;
 	}
 	
-	
-	
-	
-	
-
 }

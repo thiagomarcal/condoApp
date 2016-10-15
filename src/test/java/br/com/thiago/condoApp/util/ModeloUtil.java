@@ -84,7 +84,7 @@ public class ModeloUtil {
 		reserva.setDataInicio(new Date());
 		reserva.setDataFim(new Date());
 		reserva.setMorador(morador);
-		reserva.setSituacao(Situacao.EM_ANDAMENTO);
+		reserva.setSituacao(Situacao.Pendente);
 		reserva.setArea(area);
 
 		this.reservaService.save(reserva);
