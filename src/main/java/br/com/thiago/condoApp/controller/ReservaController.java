@@ -54,6 +54,11 @@ public class ReservaController {
 		return new ResponseEntity<List<Reserva>>(reservaService.findBySituacao(situacao), HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/reservaspendentes", method = RequestMethod.GET)
+	public ResponseEntity<List<Reserva>> listarPorSituacaoPendente() {
+		return new ResponseEntity<List<Reserva>>(reservaService.findBySituacao(Situacao.Pendente), HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/reserva/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Reserva> pegar(@PathVariable("id") Long id) {
 		return new ResponseEntity<Reserva>(reservaService.findOne(id), HttpStatus.OK);
@@ -94,6 +99,12 @@ public class ReservaController {
 	@MessageMapping("/reserva")
 	@SendTo("/topic/reserva")
 	public Reserva mensageria(Reserva reserva) throws Exception {
+		return reserva;
+	}
+	
+	@MessageMapping("/controle")
+	@SendTo("/topic/controle")
+	public Reserva controle(Reserva reserva) throws Exception {
 		return reserva;
 	}
 	
