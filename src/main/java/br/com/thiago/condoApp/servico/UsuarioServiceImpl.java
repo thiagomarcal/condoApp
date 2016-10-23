@@ -40,5 +40,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public User findByUserName(String name) {
 		return userRepository.findByUsername(name);
 	}
+	
+	@Override
+	public List<User> findByAuthorities(String name) {
+		return userRepository.findByAuthorities(name);
+	}
 
 }

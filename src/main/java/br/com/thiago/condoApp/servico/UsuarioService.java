@@ -11,5 +11,6 @@ public interface UsuarioService {
 	public User findOne(Long id);
 	public void delete(Long id);
 	public User findByUserName(String username);
+	public List<User> findByAuthorities(String name);
 
 }
