@@ -26,7 +26,6 @@ import br.com.thiago.condoApp.modelo.Apartamento;
 import br.com.thiago.condoApp.modelo.AuthenticationRequest;
 import br.com.thiago.condoApp.modelo.AuthenticationResponse;
 import br.com.thiago.condoApp.modelo.Encomenda;
-import br.com.thiago.condoApp.modelo.Encomenda.Tipo;
 import br.com.thiago.condoApp.security.TestApiConfig;
 import br.com.thiago.condoApp.servico.EncomendaService;
 import br.com.thiago.condoApp.util.ModeloUtil;
@@ -79,7 +78,7 @@ public class EncomendaRestTest {
 			
 			for (Encomenda encomenda : listaEncomendas) {
 				if (encomenda.getId() == encomenda1.getId()) {
-					assertTrue(encomenda.getNome().equals(encomenda1.getNome()));
+					assertTrue(encomenda.getIdentificador().equals(encomenda1.getIdentificador()));
 				}
 			}
 			
@@ -105,7 +104,7 @@ public class EncomendaRestTest {
 		try {
 			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
 			Encomenda encomenda = responseEntity.getBody();
-			assertTrue(encomenda.getTipo().equals(encomenda1.getTipo()));
+			assertTrue(encomenda.getSituacao().equals(encomenda1.getSituacao()));
 			
 			this.encomendaService.delete(encomenda1.getId());
 			
@@ -115,32 +114,32 @@ public class EncomendaRestTest {
 	}
 	
 	
-	@Test
-	public void requisicaoPegarEncomendaPorTipo() throws Exception {
-		this.inicializaAutorizacaoValidaComTokenAdmin();
-		
-		Encomenda encomenda1 = modeloUtil.criarEncomenda("CORREIOS");
-		
-		ResponseEntity<List<Encomenda>> responseEntity = client.exchange(
-				TestApiConfig.getAbsolutePath("encomenda?tipo=" + encomenda1.getTipo()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
-				new ParameterizedTypeReference<List<Encomenda>>(){});
-
-		try {
-			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-			List<Encomenda> listaEncomenda= responseEntity.getBody();
-			
-			for (Encomenda encomenda : listaEncomenda) {
-				if (encomenda.getId() == encomenda1.getId()) {
-					assertTrue(encomenda.getTipo().equals(encomenda1.getTipo()));
-				}
-			}
-		
-			this.encomendaService.delete(encomenda1.getId());
-			
-		} catch (Exception e) {
-			fail("Should have returned an HTTP 400: Ok status code");
-		}
-	}
+//	@Test
+//	public void requisicaoPegarEncomendaPorTipo() throws Exception {
+//		this.inicializaAutorizacaoValidaComTokenAdmin();
+//		
+//		Encomenda encomenda1 = modeloUtil.criarEncomenda("CORREIOS");
+//		
+//		ResponseEntity<List<Encomenda>> responseEntity = client.exchange(
+//				TestApiConfig.getAbsolutePath("encomenda?tipo=" + encomenda1.getTipo()), HttpMethod.GET, buildAuthenticationSemBodyEToken(),
+//				new ParameterizedTypeReference<List<Encomenda>>(){});
+//
+//		try {
+//			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+//			List<Encomenda> listaEncomenda= responseEntity.getBody();
+//			
+//			for (Encomenda encomenda : listaEncomenda) {
+//				if (encomenda.getId() == encomenda1.getId()) {
+//					assertTrue(encomenda.getTipo().equals(encomenda1.getTipo()));
+//				}
+//			}
+//		
+//			this.encomendaService.delete(encomenda1.getId());
+//			
+//		} catch (Exception e) {
+//			fail("Should have returned an HTTP 400: Ok status code");
+//		}
+//	}
 	
 	
 	@Test
@@ -177,7 +176,6 @@ public class EncomendaRestTest {
 		
 		Encomenda encomendaAlterada = new Encomenda();
 		encomendaAlterada.setId(encomendaOrigem.getId());
-		encomendaAlterada.setTipo(Tipo.CORREIOS);
 		
 
 		ResponseEntity<Encomenda> responseEntity = client.exchange(
@@ -187,7 +185,6 @@ public class EncomendaRestTest {
 		try {
 			assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
 			Encomenda encomendaResp = responseEntity.getBody();
-			assertTrue(encomendaResp.getTipo().equals(encomendaAlterada.getTipo()));
 			this.encomendaService.delete(encomendaResp.getId());
 			
 		} catch (Exception e) {
