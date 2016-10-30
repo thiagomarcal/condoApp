@@ -39,6 +39,10 @@ public class Morador implements Serializable {
 	@OneToMany(mappedBy = "morador", targetEntity = Veiculo.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<Veiculo> veiculos;
+	
+	@OneToMany(mappedBy = "morador", targetEntity = Encomenda.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Set<Encomenda> encomenda;
 
 	public Long getId() {
 		return id;
@@ -79,5 +83,15 @@ public class Morador implements Serializable {
 	public void setVeiculos(Set<Veiculo> veiculos) {
 		this.veiculos = veiculos;
 	}
+
+	public Set<Encomenda> getEncomenda() {
+		return encomenda;
+	}
+
+	public void setEncomenda(Set<Encomenda> encomenda) {
+		this.encomenda = encomenda;
+	}
+
+	
 	
 }

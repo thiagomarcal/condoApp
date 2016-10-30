@@ -86,11 +86,6 @@ public class ReservaController {
 	@RequestMapping(value = "/reservaControle", method = RequestMethod.PUT)
 	public ResponseEntity<Reserva> reservaControle(@RequestBody Reserva reserva) {
 		reservaService.save(reserva);
-		
-//		Morador morador = moradorService.findOne(reserva.getMorador().getId());
-//		messagingTemplate.convertAndSendToUser(morador.getPessoa().getUser().getUsername(), "/queue/teste", reserva);
-
-		
 		return new ResponseEntity<Reserva>(reserva, HttpStatus.OK);
 	}
 	

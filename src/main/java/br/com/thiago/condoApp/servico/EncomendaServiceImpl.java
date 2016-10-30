@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.thiago.condoApp.modelo.Encomenda;
-import br.com.thiago.condoApp.modelo.Encomenda.Tipo;
+import br.com.thiago.condoApp.modelo.Encomenda.Situacao;
+import br.com.thiago.condoApp.modelo.Morador;
 import br.com.thiago.condoApp.repository.EncomendaRepository;
 
 @Repository
@@ -39,8 +40,13 @@ public class EncomendaServiceImpl implements EncomendaService {
 	}
 
 	@Override
-	public List<Encomenda> findByTipo(Tipo tipo) {
-		return (List<Encomenda>) encomendaRepository.findByTipo(tipo);
+	public List<Encomenda> findBySituacao(Situacao situacao) {
+		return encomendaRepository.findBySituacao(situacao);
+	}
+
+	@Override
+	public List<Encomenda> findByMorador(Morador morador) {
+		return encomendaRepository.findByMorador(morador);
 	}
 
 }

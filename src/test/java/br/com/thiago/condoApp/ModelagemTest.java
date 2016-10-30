@@ -110,7 +110,7 @@ public class ModelagemTest {
 		
 		modeloUtil.criaVeiculo("BMW", "Z3", "LLL-1921", "002928182122", "PRETO", mr1);
 		
-		modeloUtil.criarEncomenda("CORREIOS", ap1);
+		modeloUtil.criarEncomenda("128391288312983", mr1);
 		
 		modeloUtil.criarVisitante("Carla Azevedo", ap2);
 		

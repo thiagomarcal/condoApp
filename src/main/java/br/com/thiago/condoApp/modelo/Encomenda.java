@@ -1,6 +1,7 @@
 package br.com.thiago.condoApp.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,15 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Encomenda implements Serializable{
 
 private static final long serialVersionUID = 1L;
 
-	public enum Tipo {
-		CORREIOS, EMPRESA, FOOD
+	public enum Situacao {
+		Pendente, Entregue
 	}
 	
 	@Id
@@ -25,15 +24,20 @@ private static final long serialVersionUID = 1L;
 	private Long id;
 	
 	@Column
-	private Tipo tipo;
+	private Situacao situacao;
 	
 	@Column
-	private String nome;
+	private String identificador;
+	
+	@Column
+	private Date dataChegada;
+	
+	@Column
+	private Date dataEntregue;
 	
 	@OneToOne
-	@JoinColumn(name = "apartamento_id")
-	@JsonIgnore
-	private Apartamento apartamento;
+	@JoinColumn(name = "morador_id")
+	private Morador morador;
 
 	public Long getId() {
 		return id;
@@ -43,33 +47,44 @@ private static final long serialVersionUID = 1L;
 		this.id = id;
 	}
 
-	public Tipo getTipo() {
-		return tipo;
+	public Situacao getSituacao() {
+		return situacao;
 	}
 
-	public void setTipo(Tipo tipo) {
-		this.tipo = tipo;
-	}
-	
-	
-	public String getNome(){
-		return nome;
-	}
-	
-	public void setNome(String nome){
-		this.nome = nome;
+	public void setSituacao(Situacao situacao) {
+		this.situacao = situacao;
 	}
 
-	public Apartamento getApartamento() {
-		return apartamento;
+	public String getIdentificador() {
+		return identificador;
 	}
 
-	public void setApartamento(Apartamento apartamento) {
-		this.apartamento = apartamento;
+	public void setIdentificador(String identificador) {
+		this.identificador = identificador;
 	}
-	
-	
-	
-	
-	
+
+	public Date getDataChegada() {
+		return dataChegada;
+	}
+
+	public void setDataChegada(Date dataChegada) {
+		this.dataChegada = dataChegada;
+	}
+
+	public Date getDataEntregue() {
+		return dataEntregue;
+	}
+
+	public void setDataEntregue(Date dataEntregue) {
+		this.dataEntregue = dataEntregue;
+	}
+
+	public Morador getMorador() {
+		return morador;
+	}
+
+	public void setMorador(Morador morador) {
+		this.morador = morador;
+	}
+
 }
