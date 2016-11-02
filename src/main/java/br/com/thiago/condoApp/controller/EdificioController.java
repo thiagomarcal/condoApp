@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.thiago.condoApp.modelo.Apartamento;
+import br.com.thiago.condoApp.modelo.Bloco;
 import br.com.thiago.condoApp.modelo.Edificio;
 import br.com.thiago.condoApp.servico.ApartamentoService;
+import br.com.thiago.condoApp.servico.BlocoService;
 import br.com.thiago.condoApp.servico.EdificioService;
 
 @RestController
@@ -25,6 +27,9 @@ public class EdificioController {
 	
 	@Autowired
 	private ApartamentoService apartamentoService;
+	
+	@Autowired
+	private BlocoService blocoService;
 
 	
 	@RequestMapping(value = "/edificios", method = RequestMethod.GET)
@@ -40,6 +45,12 @@ public class EdificioController {
 	@RequestMapping(value = "/edificio/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Edificio> pegar(@PathVariable("id") Long id) {
 		return new ResponseEntity<Edificio>(edificioService.findOne(id), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/edificios/bloco/{id}", method = RequestMethod.GET)
+	public ResponseEntity<List<Edificio>> listarEdificiosBLoco(@PathVariable("id") Long id) {
+		Bloco bl = blocoService.findOne(id);
+		return new ResponseEntity<List<Edificio>>(edificioService.findByBloco(bl), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/edificio/{id}", method = RequestMethod.DELETE)

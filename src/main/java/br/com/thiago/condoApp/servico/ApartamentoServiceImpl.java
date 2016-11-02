@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.thiago.condoApp.modelo.Apartamento;
+import br.com.thiago.condoApp.modelo.Edificio;
 import br.com.thiago.condoApp.repository.ApartamentoRepository;
 
 @Repository
@@ -39,6 +40,11 @@ public class ApartamentoServiceImpl implements ApartamentoService {
 	@Override
 	public List<Apartamento> findByNome(String nome) {
 		return apartamentoRepository.findByNome(nome);
+	}
+
+	@Override
+	public List<Apartamento> findByEdificio(Edificio edificio) {
+		return apartamentoRepository.findByEdificio(edificio);
 	}
 
 }

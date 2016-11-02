@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.thiago.condoApp.modelo.Bloco;
 import br.com.thiago.condoApp.modelo.Edificio;
 import br.com.thiago.condoApp.repository.EdificioRepository;
 
@@ -39,6 +40,11 @@ public class EdificioServiceImpl implements EdificioService {
 	@Override
 	public List<Edificio> findByNome(String nome) {
 		return edificioRepository.findByNome(nome);
+	}
+
+	@Override
+	public List<Edificio> findByBloco(Bloco bloco) {
+		return edificioRepository.findByBloco(bloco);
 	}
 
 }
