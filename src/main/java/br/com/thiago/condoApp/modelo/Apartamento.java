@@ -43,9 +43,10 @@ public class Apartamento implements Serializable {
 	@OneToMany(mappedBy = "apartamento", targetEntity = Visitante.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<Visitante> visitantes;
-
-//	@OneToMany(mappedBy = "apartamento", targetEntity = Encomenda.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//	private Set<Encomenda> encomenda;
+	
+	@OneToMany(mappedBy = "apartamento", targetEntity = Reclamacao.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Set<Reclamacao> reclamacoes;
 
 	public Long getId() {
 		return id;
@@ -94,13 +95,16 @@ public class Apartamento implements Serializable {
 	public void setVisitantes(Set<Visitante> visitantes) {
 		this.visitantes = visitantes;
 	}
-//
-//	public Set<Encomenda> getEncomenda() {
-//		return encomenda;
-//	}
-//
-//	public void setEncomenda(Set<Encomenda> encomenda) {
-//		this.encomenda = encomenda;
-//	}
+
+	public Set<Reclamacao> getReclamacoes() {
+		return reclamacoes;
+	}
+
+	public void setReclamacoes(Set<Reclamacao> reclamacoes) {
+		this.reclamacoes = reclamacoes;
+	}
+	
+	
+	
 
 }

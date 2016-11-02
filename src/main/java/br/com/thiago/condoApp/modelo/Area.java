@@ -39,6 +39,10 @@ public class Area implements Serializable {
 	@OneToMany(mappedBy = "area", targetEntity = Reserva.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<Reserva> reservas;
+	
+	@OneToMany(mappedBy = "area", targetEntity = Reclamacao.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Set<Reclamacao> reclamacoes;
 
 	public Long getId() {
 		return id;
@@ -79,4 +83,13 @@ public class Area implements Serializable {
 	public void setReservas(Set<Reserva> reservas) {
 		this.reservas = reservas;
 	}
+
+	public Set<Reclamacao> getReclamacoes() {
+		return reclamacoes;
+	}
+
+	public void setReclamacoes(Set<Reclamacao> reclamacoes) {
+		this.reclamacoes = reclamacoes;
+	}
+	
 }

@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.thiago.condoApp.modelo.Apartamento;
+import br.com.thiago.condoApp.modelo.Edificio;
 import br.com.thiago.condoApp.modelo.Morador;
 import br.com.thiago.condoApp.servico.ApartamentoService;
+import br.com.thiago.condoApp.servico.EdificioService;
 import br.com.thiago.condoApp.servico.MoradorService;
 
 @RestController
@@ -22,6 +24,9 @@ public class ApartamentoController {
 	
 	@Autowired
 	private ApartamentoService apartamentoService;
+	
+	@Autowired
+	private EdificioService edificioService;
 	
 	@Autowired
 	private MoradorService moradorService;
@@ -34,6 +39,12 @@ public class ApartamentoController {
 	@RequestMapping(value = "/apartamento", method = RequestMethod.GET)
 	public ResponseEntity<List<Apartamento>> listarPorNome(@RequestParam("nome") String nome) {
 		return new ResponseEntity<List<Apartamento>>(apartamentoService.findByNome(nome), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/apartamentos/edificio/{id}", method = RequestMethod.GET)
+	public ResponseEntity<List<Apartamento>> listarEdificiosBLoco(@PathVariable("id") Long id) {
+		Edificio ed = edificioService.findOne(id);
+		return new ResponseEntity<List<Apartamento>>(apartamentoService.findByEdificio(ed), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/apartamento/{id}", method = RequestMethod.GET)

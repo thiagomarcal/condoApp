@@ -2,6 +2,7 @@ package br.com.thiago.condoApp.servico;
 
 import java.util.List;
 
+import br.com.thiago.condoApp.modelo.Bloco;
 import br.com.thiago.condoApp.modelo.Edificio;
 
 public interface EdificioService {
@@ -11,5 +12,6 @@ public interface EdificioService {
 	public Edificio findOne(Long id);
 	public void delete(Long id);
 	public List<Edificio> findByNome(String nome);
+	public List<Edificio> findByBloco(Bloco bloco);
 
 }
